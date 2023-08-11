@@ -52,76 +52,69 @@
                             <div class="col-xl-3 col-md-6">
                                 <div class="card profile-card">
                                     <div class="card-body">
-                                      <div class="avatar avatar-surfer avatar-lg">
-                                        <div class="avatar-content"><div class="avatar-img-wrapper">
-                                          <div class="avatar-badge"><span class="app-icon-wrapper  "><span class="app-icon icon-badge-"></span></span></div>
-                                            <img class="avatar-img" src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
-                                          </div>
-                                          </div>
-                                      </div>
-                                      <div class="text-center">{{vc.surfer.first_name}} {{vc.surfer.last_name}}</div>
-
+                                        <div class="avatar avatar-surfer avatar-lg">
+                                            <div class="avatar-content">
+                                                <div class="avatar-img-wrapper">
+                                                    <div class="avatar-badge">
+                                                        <span class="app-icon-wrapper  ">
+                                                            <span class="app-icon icon-badge-"></span>
+                                                        </span>
+                                                    </div>
+                                                    <img class="avatar-img" src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">{{vc.surfer.first_name}} {{vc.surfer.last_name}}
+                                        </div>
                                         <div class="text-center mt-3 mb-3">
-
-                                          <a class="btn btn-outline-strava"> Upadate with Strava Data
-                                          <img class="strava-logo" src="{% static 'avatars/strava_logo.png'%}">
-                                          </a>
-
-
+                                            <a onclick="click_update_strava()" class="btn btn-outline-strava cursor-pointer">
+                                                <span>Update with Strava Data</span>
+                                                <img class="strava-logo" src="{% static 'avatars/strava_logo.png'%}">
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="small stretched-link colorless-link" href="#">Your Sessions Log</a>
+                                        <a class="" >Your Sessions Log</a>
                                         <div class="small"><i class="fas fa-angle-right"></i></div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-xl-9 col-md-6">
-                              
-                              {% for session in vc.sessions %}
-                              <div class="card card-session">
-                                <div class="card-header">
-                                  <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{session.surfer.id}}.png">
-                                  <div class="session-surfer-name">{{session.surfer.first_name}} {{session.surfer.last_name}}</div>
-                                  <div class="session-date">{{session.display_date}}</div>
-                                </div>
-                                <div class="card-body session-card-body">
-                                    <h5 class="session-card-title"><a href="/session/{{session.id}}">{{session.name}}</a></h5>
-                                    <!--h5 class="session-card-title">
-                                        <img class="spot-img" src="{% static 'spots/'%}{{session.location.short_name}}"
-                                        {{session.location}}
-                                    </h5-->
-                                    <table class="table-session-stats">
-                                        <thead>
-                                            <th>Waves</th>
-                                            <th>Duration</th>
-                                            <th>Max Speed</th>
-                                        </thead>
-                                        
-                                        <tbody>
-                                            <td>{{session.number_of_waves}}</td>
-                                            <td>{{session.display_duration}}</td>
-                                            <td>{{session.display_max_speed}}</td>
-                                        </tbody>
+                                {% for session in vc.sessions %}
+                                    <div class="card card-session">
+                                        <div class="card-header">
+                                            <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{session.surfer.id}}.png">
+                                            <div class="session-surfer-name">{{session.surfer.first_name}} {{session.surfer.last_name}}</div>
+                                            <div class="session-date">{{session.display_date}}</div>
+                                        </div>
+                                        <div class="card-body session-card-body">
+                                            <h5 class="session-card-title">
+                                                <a href="/session/{{session.id}}">{{session.name}}</a>
+                                            </h5>
 
-                                        
-                                            
-                                        
-                                    </table>
-                                    <div id="map_{{session.id}}" class="session-map" ></div>
-                                    <div class="text-center">
-                                        
-                                        <!--img class="session-img" src="{% static 'sessions/'%}{{session.strava_activity_id}}.png"-->
+                                            <table class="table-session-stats">
+                                                <thead>
+                                                    <th>Waves</th>
+                                                    <th>Duration</th>
+                                                    <th>Max Speed</th>
+                                                </thead>
+                                                <tbody>
+                                                    <td>{{session.number_of_waves}}</td>
+                                                    <td>{{session.display_duration}}</td>
+                                                    <td>{{session.display_max_speed}}</td>
+                                                </tbody>
+                                            </table>
+                                            <div id="map_{{session.id}}" class="session-map" >
+                                            </div>
+                                            <div class="text-center">
+                                                <!--img class="session-img" src="{% static 'sessions/'%}{{session.strava_activity_id}}.png"-->
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                              </div>
-                              {% endfor %}
-
-                             
-                           
+                                {% endfor %}
                             </div>
-                       
+                        </div>
                     </div>
                 </main>
                 <footer class="py-4 bg-light mt-auto">
@@ -145,8 +138,12 @@
 
 <script>
 
-    // iterar as atividades, aponta para as coordenadas do spot e desenha o GPX
+    function click_update_strava(){
+        console.log("ASDASDA")
+        window.location='/strava/login/';
+    }
 
+    // iterar as atividades, aponta para as coordenadas do spot e desenha o GPX
     var gpxs_data_str = "{{vc.gpxs_data|safe}}";
     gpxs_data_str= gpxs_data_str.replaceAll("'", '"')
     gpxs_data = JSON.parse(gpxs_data_str)
@@ -156,7 +153,7 @@
             maxZoom: 19,
             attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
-        L.tileLayer.here({appId: 'abcde', appCode: 'fghij', scheme: 'satellite.day'}).addTo(map);
+        //L.tileLayer.here({appId: 'abcde', appCode: 'fghij', scheme: 'satellite.day'}).addTo(map);
 
         map.setView([session.spot_lat, session.spot_long], 16)
 

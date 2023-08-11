@@ -154,9 +154,15 @@
 .btn-outline-strava {
     border-color: #FC4C02;
     color: #FC4C02;
-    margin-top: 0.3rem;
+    margin-top: 0.25rem;
+}
+.btn-outline-strava:hover {
+    border-color: #FC4C02;
 }
 
 .strava-logo {
     max-width: 1.3rem;
+}
+.cursor-pointer:hover{
+    cursor: pointer;
 }
