@@ -1,0 +1,162 @@
+
+.navbar-content{
+  display: flex;
+  margin-left: 16%;
+  margin-right: 16%;
+  width: 100%;
+}
+.navbar-nav {
+  float: right;
+  margin-left:auto;
+}
+
+.page-content{
+  margin-left: 16%;
+  margin-right: 16%;
+}
+
+@font-face {
+  font-family: "Apple Tea";
+  src: url(/static/fonts/AppleTea-z8R1a.ttf);
+}
+
+.navbar-brand {
+  padding-top: 0.6125rem;
+  font-family: "Apple Tea";
+}
+
+.navbar-bg {
+  background-color: white;
+  color: dodgerblue;
+}
+
+.sb-nav-fixed {
+  background-color: beige;
+}
+
+.profile-card, .card-footer{
+  background-color: white;
+  color: #474545;
+}
+.card-header {
+  display: flex;
+  background-color: white;
+}
+
+.card-session {
+  margin-bottom: 2rem;
+}
+
+
+.colorless-link{
+  color:black;
+  text-decoration: none;
+}
+
+#profile-card .avatar-img {
+  -webkit-box-shadow: 0px 8px 24px rgb(13 13 18 / 16%);
+  box-shadow: 0px 8px 24px rgb(13 13 18 / 16%);
+}
+
+.avatar-athlete img, .avatar-surfer, .avatar-img {
+  border-radius: 50%;
+  background-color: #f7f7fa;
+}
+.avatar-lg, .avatar-lg .avatar-img {
+  height: 90px;
+  width: 90px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.avatar-sm, .avatar-sm .avatar-img {
+  height: 32px;
+  width: 32px;
+}
+
+
+.avatar-content {
+  display: table-row;
+}
+
+
+.session-surfer-name {
+  margin-left: 1rem;
+  padding-top: 0.2rem;
+}
+
+.session-date {
+  margin-left: auto;
+  padding-top: 0.2rem;
+  color: gray;
+  font-size: small;
+}
+
+.session-img {
+  width: 100%;
+}
+
+.session-card-body {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 1rem;
+}
+
+.session-card-title {
+  margin-bottom: 1.2rem;
+  margin-left: 3rem;
+  color:#474545;
+  font-weight: 400;
+  
+}
+.session-card-title a {
+  color: black;
+  text-decoration: none;
+}
+.session-card-title a:hover {
+  cursor:pointer;
+  color: dodgerblue;
+  
+}
+
+.session-location {
+  float: right;
+}
+.table-session-stats{
+  margin-left: 3rem;
+  margin-bottom: 2rem;
+}
+.table-session-stats th{
+  font-weight: 400;
+  color:#6d6d78;
+  padding-right: 2.5rem;
+}
+
+.table-session-stats td{
+  font-size: 20px;
+  line-height: 25px;
+  color:#6d6d78;
+  color: black;
+}
+.spot-img {
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+
+}
+
+.session-map{
+  height: 16rem;
+  margin-left: 3rem;
+}
+
+.btn-outline-strava {
+    border-color: #FC4C02;
+    color: #FC4C02;
+    margin-top: 0.3rem;
+}
+
+.strava-logo {
+    max-width: 1.3rem;
+}

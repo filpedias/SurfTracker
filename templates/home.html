@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Home | SurfTracker</title>
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/home.css' %}" rel="stylesheet" /><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+        <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="{% static 'js/leaflet-tilelayer-here.js' %}" crossorigin="anonymous"></script>
+
+</script>
+    </head>
+    <body class="sb-nav-fixed">
+        <nav class="sb-topnav navbar navbar-expand navbar-bg">
+            <div class="navbar-content">
+              <!-- Navbar Brand-->
+              <a class="navbar-brand" href="index.html">SurfTracker</a>
+              
+              <!-- Navbar-->
+              <ul class="navbar-nav">
+
+                  <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="avatar-img avatar-sm" src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
+                      </a>
+                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                          <li><a class="dropdown-item" href="#!">Settings</a></li>
+                          <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                          <li><hr class="dropdown-divider" /></li>
+                          <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                      </ul>
+                  </li>
+              </ul>
+            </div>
+        </nav>
+        <div id="layoutSidenav">
+            
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="page-content">
+                        
+                        <div class="row mt-5 ">
+                            <div class="col-xl-3 col-md-6">
+                                <div class="card profile-card">
+                                    <div class="card-body">
+                                      <div class="avatar avatar-surfer avatar-lg">
+                                        <div class="avatar-content"><div class="avatar-img-wrapper">
+                                          <div class="avatar-badge"><span class="app-icon-wrapper  "><span class="app-icon icon-badge-"></span></span></div>
+                                            <img class="avatar-img" src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
+                                          </div>
+                                          </div>
+                                      </div>
+                                      <div class="text-center">{{vc.surfer.first_name}} {{vc.surfer.last_name}}</div>
+
+                                        <div class="text-center mt-3 mb-3">
+
+                                          <a class="btn btn-outline-strava"> Upadate with Strava Data
+                                          <img class="strava-logo" src="{% static 'avatars/strava_logo.png'%}">
+                                          </a>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="card-footer d-flex align-items-center justify-content-between">
+                                        <a class="small stretched-link colorless-link" href="#">Your Sessions Log</a>
+                                        <div class="small"><i class="fas fa-angle-right"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-9 col-md-6">
+                              
+                              {% for session in vc.sessions %}
+                              <div class="card card-session">
+                                <div class="card-header">
+                                  <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{session.surfer.id}}.png">
+                                  <div class="session-surfer-name">{{session.surfer.first_name}} {{session.surfer.last_name}}</div>
+                                  <div class="session-date">{{session.display_date}}</div>
+                                </div>
+                                <div class="card-body session-card-body">
+                                    <h5 class="session-card-title"><a href="/session/{{session.id}}">{{session.name}}</a></h5>
+                                    <!--h5 class="session-card-title">
+                                        <img class="spot-img" src="{% static 'spots/'%}{{session.location.short_name}}"
+                                        {{session.location}}
+                                    </h5-->
+                                    <table class="table-session-stats">
+                                        <thead>
+                                            <th>Waves</th>
+                                            <th>Duration</th>
+                                            <th>Max Speed</th>
+                                        </thead>
+                                        
+                                        <tbody>
+                                            <td>{{session.number_of_waves}}</td>
+                                            <td>{{session.display_duration}}</td>
+                                            <td>{{session.display_max_speed}}</td>
+                                        </tbody>
+
+                                        
+                                            
+                                        
+                                    </table>
+                                    <div id="map_{{session.id}}" class="session-map" ></div>
+                                    <div class="text-center">
+                                        
+                                        <!--img class="session-img" src="{% static 'sessions/'%}{{session.strava_activity_id}}.png"-->
+                                    </div>
+                                </div>
+                              </div>
+                              {% endfor %}
+
+                             
+                           
+                            </div>
+                       
+                    </div>
+                </main>
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">Copyright &copy; Your Website 2022</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+
+    </body>
+</html>
+
+<script>
+
+    // iterar as atividades, aponta para as coordenadas do spot e desenha o GPX
+
+    var gpxs_data_str = "{{vc.gpxs_data|safe}}";
+    gpxs_data_str= gpxs_data_str.replaceAll("'", '"')
+    gpxs_data = JSON.parse(gpxs_data_str)
+    gpxs_data.forEach(function(session){
+        map = L.map('map_' + session.session_id)
+        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+        L.tileLayer.here({appId: 'abcde', appCode: 'fghij', scheme: 'satellite.day'}).addTo(map);
+
+        map.setView([session.spot_lat, session.spot_long], 16)
+
+        
+        session["wave_points"].forEach(function(array_of_points){
+            wave_line = []
+
+            array_of_points.forEach(function(point){
+                wave_line.push([point.latitude, point.longitude])
+            })
+
+            
+            polyline = L.polyline(wave_line, {color: 'red'}).addTo(map)
+            //map.fitBounds(polyline.getBounds());
+            
+
+
+        })
+
+    });
+    
+</script>

@@ -1,0 +1,3 @@
+2023-04-14 19:37:09 |  403 - {"detail":"Authentication credentials were not provided."}
+2023-04-14 19:37:29 |  403 - {"detail":"Authentication credentials were not provided."}
+2023-04-14 19:38:57 |  403 - {"detail":"Authentication credentials were not provided."}

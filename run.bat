@@ -1,0 +1,1 @@
+python C:\dev\SurfTracker\manage.py runserver
