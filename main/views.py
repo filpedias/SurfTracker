@@ -3,7 +3,7 @@ from django.http import HttpResponseRedirect, HttpRequest, Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
-from main.models import Surfer, SurfSession, Wave, WavePoint
+from .models import Surfer, SurfSession, Wave, WavePoint
 from main.forms import AuthenticateForm
 from django.contrib.auth import authenticate, login
 from django.views.decorators.http import require_http_methods
