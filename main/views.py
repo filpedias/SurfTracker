@@ -115,8 +115,29 @@ def session(request, session_id):
     vc = {
         'surfer': session.surfer,
         'session': session,
-        'session_data': session_data
-        
+        'session_data': session_data     
     }
 
     return render(request, 'session.html', {'vc': vc})
+
+
+    
+@require_http_methods(["GET", "POST"])
+def strava_login(request):
+
+    if request.method == 'POST':
+        data = request.POST.copy()
+        if 'client_id' in data and 'client_secret' in data:
+            client_id = data['client_id']
+            client_secret = data['client_secret']
+            print(client_id, client_secret)
+
+    
+    vc = {
+        'surfer': request.user
+    }
+
+
+
+
+    return render(request, 'strava_login.html', {'vc': vc})

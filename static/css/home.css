@@ -167,3 +167,11 @@
 .cursor-pointer:hover{
     cursor: pointer;
 }
+
+.ml-a {
+  margin-left:auto;
+}
+
+.mr-a {
+  margin-right:auto;
+}
