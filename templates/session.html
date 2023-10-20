@@ -80,7 +80,7 @@
                               
                               <div class="card card-session">
                                 <div class="card-header">
-                                  <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{session.surfer.id}}.png">
+                                  <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
                                   <div class="session-surfer-name">{{vc.session.surfer.first_name}} {{vc.session.surfer.last_name}}</div>
                                   <div class="session-date">{{vc.session.display_date}}</div>
                                 </div>
