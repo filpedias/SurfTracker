@@ -23,6 +23,8 @@ Functionality to automaticly update strava data is in progress.
 
 
 
+![Session](documentation/session.png)
+
 ## Installation and Setup Instructions
 
 Clone down this repository. You will need `python` and `django` installed globally on your machine.  
