@@ -134,21 +134,34 @@ session_wave_points = session_data["wave_points"]
 
 
 map = L.map('map_' + session_id)
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 25}).addTo(map);
-//L.tileLayer.here({appId: 'abcde', appCode: 'fghij', scheme: 'satellite.day'}).addTo(map);
 
-map.setView([spot_lat, spot_long], 16)
+googleSat = L.tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}',{
+        maxZoom: 20,
+        subdomains:['mt0','mt1','mt2','mt3']
+}).addTo(map);
 
+
+
+// avg coordinates
+sum_lat = 0
+sum_long = 0
+count_points = 0
     
 session_wave_points.forEach(function(array_of_points){
     wave_line = []
     array_of_points.forEach(function(point){
         wave_line.push([point.latitude, point.longitude])
+        count_points += 1
+        sum_lat += point.latitude
+        sum_long += point.longitude
     })
-    console.log(wave_line);
     polyline = L.polyline(wave_line, {color: 'blue'}).addTo(map)
 })
 
+avg_lat = sum_lat/count_points
+avg_long = sum_long/count_points
+
+map.setView([avg_lat, avg_long], 19)
 
 leafleet_logos = document.getElementsByClassName("leaflet-control-attribution")
 leafleet_logos[0].style.display = 'none';
