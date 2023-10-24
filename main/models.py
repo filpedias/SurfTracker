@@ -10,6 +10,7 @@ class Surfer(AbstractUser):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     strava_user_id = models.CharField(max_length=90)
+    strava_code = models.CharField(max_length=90)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} | Strava ID: {self.strava_user_id}"

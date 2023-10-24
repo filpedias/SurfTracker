@@ -3,7 +3,7 @@ import os
 import requests
 import time
 
-from main.configs import client_id, client_secret, redirect_uri
+from main.configs import client_id, client_secret, redirect_uri, strava_user_id
 
 def request_token(client_id, client_secret, code):
     response = requests.post(url='https://www.strava.com/oauth/token',
@@ -26,7 +26,8 @@ def get_token():
     return data
 
 def update_strava():
-
+    from main.models import Surfer
+    surfer = Surfer.objects.get(strava_user_id=strava_user_id)
 
     if not os.path.exists('strava_tokens.json'):
         request_url = f'http://www.strava.com/oauth/authorize?client_id={client_id}' \
@@ -45,10 +46,14 @@ def update_strava():
         # Save tokens to file
         write_token(strava_tokens)
 
+        
+        surfer.strava_code = code
+        surfer.save()
+
     data = get_token()
 
     if data['expires_at'] < time.time():
-        new_tokens = request_token(client_id, client_secret, data['refresh_token'])
+        new_tokens = request_token(client_id, client_secret, surfer.strava_code)
         if new_tokens.status_code == 200:
             # Update the file
             write_token(new_tokens)
@@ -60,40 +65,45 @@ def update_strava():
     athlete_url = f"https://www.strava.com/api/v3/athlete?access_token={access_token}"
     try:
         response = requests.get(athlete_url)
-        athlete = response.json()
-        print(athlete)
+        if response.status_code == 200: 
+            athlete = response.json()
+            
+            print(athlete)
+            print('RESTful API:', athlete_url)
+            print('=' * 5, 'ATHLETE INFO', '=' * 5)
+            print('Name:', athlete['firstname'], " ", athlete['lastname'])
+            print('Gender:', athlete['sex'])
+            print('City:', athlete['city'], athlete['country'])
+            print('Strava athlete from:', athlete['created_at'])
+
+            activities_url = f"https://www.strava.com/api/v3/athlete/activities?" \
+                            f"access_token={access_token}"
+            print('RESTful API:', activities_url)
+            response = requests.get(activities_url)
+            if response.status_code == 200:
+                activities = response.json()
+                surfing_activities = list()
+
+                for activity in activities:
+                    if 'type' in activity and activity['type'] == 'Surfing':
+                        surfing_activities.append(activity)
+
+                        print('=' * 5, 'SINGLE ACTIVITY', '=' * 5)
+                        print('Athlete:', athlete['firstname'], athlete['lastname'])
+                        print('Name:', activity['name'])
+                        print('Date:', activity['start_date'])
+                        print('Disance:', activity['distance'], 'm')
+                        print('Average Speed:', activity['average_speed'], 'm/s')
+                        print('Max speed:', activity['max_speed'], 'm/s')
+                        print('Moving time:', round(activity['moving_time'] / 60, 2), 'minutes')
+                        print('Location:', activity['location_city'],
+                            activity['location_state'], activity['location_country'])
+            else:
+                print(f"{activities_url} returned {response}")
+        else: 
+            print(f"{athlete_url} returned {response}")
     except ConnectionError as ce:
         print(ce)
-        
+            
 
-    print('RESTful API:', athlete_url)
-    print('=' * 5, 'ATHLETE INFO', '=' * 5)
-    print('Name:', athlete['firstname'], " ", athlete['lastname'])
-    print('Gender:', athlete['sex'])
-    print('City:', athlete['city'], athlete['country'])
-    print('Strava athlete from:', athlete['created_at'])
-
-    activities_url = f"https://www.strava.com/api/v3/athlete/activities?" \
-                    f"access_token={access_token}"
-    print('RESTful API:', activities_url)
-    response = requests.get(activities_url)
-    if response.status_code == 200:
-        activities = response.json()
-        surfing_activities = list()
-
-        for activity in activities:
-            if 'type' in activity and activity['type'] == 'Surfing':
-                surfing_activities.append(activity)
-
-                print('=' * 5, 'SINGLE ACTIVITY', '=' * 5)
-                print('Athlete:', athlete['firstname'], athlete['lastname'])
-                print('Name:', activity['name'])
-                print('Date:', activity['start_date'])
-                print('Disance:', activity['distance'], 'm')
-                print('Average Speed:', activity['average_speed'], 'm/s')
-                print('Max speed:', activity['max_speed'], 'm/s')
-                print('Moving time:', round(activity['moving_time'] / 60, 2), 'minutes')
-                print('Location:', activity['location_city'],
-                    activity['location_state'], activity['location_country'])
-    else: 
-        print(response)
+    
