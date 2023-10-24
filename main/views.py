@@ -9,6 +9,8 @@ from django.contrib.auth import authenticate, login
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from main.settings import STRAVA_AUTH_URL, STRAVA_TOKEN_URL, STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET
+import main.strava
 
 def login(request):
     vc = {}
@@ -101,7 +103,6 @@ def home(request):
 
 
 @require_http_methods(["GET"])
-@login_required
 def session(request, session_id):
 
     session = SurfSession.objects.get(id=session_id)
@@ -124,6 +125,9 @@ def session(request, session_id):
     
 @require_http_methods(["GET", "POST"])
 def strava_login(request):
+    from django.shortcuts import redirect, render
+
+
 
     if request.method == 'POST':
         data = request.POST.copy()
@@ -131,6 +135,14 @@ def strava_login(request):
             client_id = data['client_id']
             client_secret = data['client_secret']
             print(client_id, client_secret)
+            params = {
+                'client_id': client_id,
+                'redirect_uri': request.build_absolute_uri(reverse('strava_callback')),
+                'response_type': 'code',
+                'scope': 'read',
+            }
+            auth_url = f'{STRAVA_AUTH_URL}?{"&".join([f"{k}={v}" for k, v in params.items()])}'
+            return redirect(auth_url)
 
     
     vc = {
@@ -141,3 +153,44 @@ def strava_login(request):
 
 
     return render(request, 'strava_login.html', {'vc': vc})
+
+
+def strava_callback(request):
+    import requests
+
+    code = request.GET.get('code')
+    if code:
+        data = {
+            'client_id': STRAVA_CLIENT_ID,
+            'client_secret': STRAVA_CLIENT_SECRET,
+            'code': code,
+            'grant_type': 'authorization_code',
+        }
+        response = requests.post(url='https://www.strava.com/oauth/token',
+                             data={'client_id': STRAVA_CLIENT_ID,
+                                   'client_secret': STRAVA_CLIENT_SECRET,
+                                   'code': code,
+                                   'grant_type': 'authorization_code'})
+        if response.status_code == 200:
+            access_token = response.json().get('access_token')
+            
+            athlete_url = f"https://www.strava.com/api/v3/athlete?" \
+                        f"access_token={access_token}"
+            athlete_response = requests.get(athlete_url)
+            athlete = athlete_response.json()
+
+            activities_url = f"https://www.strava.com/api/v3/athlete/activities?" \
+                            f"access_token={access_token}"
+            print('RESTful API:', activities_url)
+            response_activities = requests.get(activities_url)
+            surfer_obj = Surfer.objects.get(strava_user_id=athlete['id'])
+
+            new_sessions_added = list()
+            if surfer_obj:
+                new_sessions_added = strava.get_surfing_activities_from_strava(response_activities.json(), surfer_obj)
+
+            response['msg'] = f"{len(new_sessions_added)} new sessions added" if len(new_sessions_added) > 0 \
+                else "Everything was already updated"
+
+
+    return render(request, 'strava_error.html')

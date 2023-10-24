@@ -11,7 +11,8 @@ urlpatterns = [
     re_path(r'^accounts/login/$', views.login, name="login"),
     re_path(r'^$', views.home, name="home"),
     re_path(r'^session/(?P<session_id>[0-9]+)/$', views.session, name="session"),
-    re_path(r'^strava/login/$', views.strava_login, name="strava_login")
+    re_path(r'^strava/login/$', views.strava_login, name="strava_login"),
+    path('strava/callback/', views.strava_callback, name='strava_callback'),
 
 ]
 

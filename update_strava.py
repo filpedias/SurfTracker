@@ -20,3 +20,5 @@ else:
 with open(file_path, permission) as f:
     f.write(f"{dt_now.strftime('%Y-%m-%d %H:%M:%S')} |  {req.status_code} - {req.text}\n")
 
+from main.strava import update_strava
+update_strava()

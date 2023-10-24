@@ -146,6 +146,7 @@
     var gpxs_data_str = "{{vc.gpxs_data|safe}}";
     gpxs_data_str= gpxs_data_str.replaceAll("'", '"')
     gpxs_data = JSON.parse(gpxs_data_str)
+    
     gpxs_data.forEach(function(session){
         map = L.map('map_' + session.session_id)
         L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -156,22 +157,19 @@
 
         map.setView([session.spot_lat, session.spot_long], 16)
 
-        
         session["wave_points"].forEach(function(array_of_points){
             wave_line = []
-
             array_of_points.forEach(function(point){
                 wave_line.push([point.latitude, point.longitude])
             })
-
-            
             polyline = L.polyline(wave_line, {color: 'red'}).addTo(map)
-            //map.fitBounds(polyline.getBounds());
-            
-
-
         })
 
     });
+
+    leafleet_logos = document.getElementsByClassName("leaflet-control-attribution")
+    for(var i=0; i < leafleet_logos.length; i++){
+        leafleet_logos[i].style.display = 'none';
+    }
     
 </script>

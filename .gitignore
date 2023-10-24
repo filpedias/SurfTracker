@@ -3,3 +3,8 @@
 *.idea
 
 .vscode/*
+
+gpx/*
+*.sqlite3
+logs/*
+

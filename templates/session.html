@@ -78,7 +78,7 @@
 
                             <div class="col-xl-9 col-md-6">
                               
-                              <div class="card card-session">
+                              <div class="card card-session session-page-card">
                                 <div class="card-header">
                                   <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
                                   <div class="session-surfer-name">{{vc.session.surfer.first_name}} {{vc.session.surfer.last_name}}</div>
@@ -86,7 +86,7 @@
                                 </div>
                                 <div class="card-body session-card-body">
 
-                                    <div id="map_{{vc.session.id}}" class="session-map" ></div>
+                                    <div id="map_{{vc.session.id}}" class="session-page-session-map"></div>
                                     <div class="text-center">
                                         
                                         <!--img class="session-img" src="{% static 'sessions/'%}{{session.strava_activity_id}}.png"-->
@@ -125,33 +125,32 @@
 
 
 var gpxs_data_str = "{{vc.session_data|safe}}";
-gpx_data_str = gpxs_data_str.replaceAll("'", '"')
+gpxs_data_str = gpxs_data_str.replaceAll("'", '"')
 session_data = JSON.parse(gpxs_data_str)
+session_id = session_data["session_id"]
+spot_lat = session_data["spot_lat"]
+spot_long = session_data["spot_long"]
+session_wave_points = session_data["wave_points"]
+
 
 map = L.map('map_' + session_id)
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    maxZoom: 19,
-    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-}).addTo(map);
-L.tileLayer.here({appId: 'abcde', appCode: 'fghij', scheme: 'satellite.day'}).addTo(map);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom: 25}).addTo(map);
+//L.tileLayer.here({appId: 'abcde', appCode: 'fghij', scheme: 'satellite.day'}).addTo(map);
 
 map.setView([spot_lat, spot_long], 16)
 
     
-    session_wave_points.forEach(function(array_of_points){
-        wave_line = []
-
-        array_of_points.forEach(function(point){
-            wave_line.push([point.latitude, point.longitude])
-        })
-
-        
-        polyline = L.polyline(wave_line, {color: 'red'}).addTo(map)
-        //map.fitBounds(polyline.getBounds());
-        
-
-
+session_wave_points.forEach(function(array_of_points){
+    wave_line = []
+    array_of_points.forEach(function(point){
+        wave_line.push([point.latitude, point.longitude])
     })
+    console.log(wave_line);
+    polyline = L.polyline(wave_line, {color: 'blue'}).addTo(map)
+})
 
+
+leafleet_logos = document.getElementsByClassName("leaflet-control-attribution")
+leafleet_logos[0].style.display = 'none';
 
 </script>

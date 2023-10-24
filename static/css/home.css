@@ -47,6 +47,11 @@
   margin-bottom: 2rem;
 }
 
+.session-page-card {
+  min-height: 550px;
+}
+
+
 
 .colorless-link{
   color:black;
@@ -150,7 +155,9 @@
   height: 16rem;
   margin-left: 3rem;
 }
-
+.session-page-session-map{
+  height: 36rem;
+}
 .btn-outline-strava {
     border-color: #FC4C02;
     color: #FC4C02;
