@@ -8,3 +8,4 @@ gpx/*
 *.sqlite3
 logs/*
 strava_tokens.json
+main/configs.py
