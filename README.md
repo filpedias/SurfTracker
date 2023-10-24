@@ -22,8 +22,8 @@ Functionality to automaticly update strava data is in progress.
 ![Feed](documentation/feed.png)
 
 
-
 ![Session](documentation/session.png)
+
 
 ## Installation and Setup Instructions
 

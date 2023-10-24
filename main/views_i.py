@@ -309,10 +309,6 @@ class StravaSync(APIView):
         response = copy.deepcopy(API_I_RESPONSE_TEMPLATE)
         response["status"] = "ok"
 
-        # Initial Settings
-        client_id = '96545'
-        client_secret = '71e2b0e4e31dda3deb558c6db69be12359bda2fa'
-        redirect_uri = 'http://localhost/'
         from main.configs import client_id, client_secret, redirect_uri
 
         if not os.path.exists('strava_tokens.json'):

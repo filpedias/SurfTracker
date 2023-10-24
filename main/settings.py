@@ -143,8 +143,3 @@ mimetypes.add_type("text/css", ".css", True)
 
 SITE_VERSION = '1.0.0'
 
-
-STRAVA_AUTH_URL = 'https://www.strava.com/oauth/authorize'
-STRAVA_TOKEN_URL = 'https://www.strava.com/oauth/token'
-STRAVA_CLIENT_ID = '96545'
-STRAVA_CLIENT_SECRET = '71e2b0e4e31dda3deb558c6db69be12359bda2fa'

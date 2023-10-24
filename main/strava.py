@@ -48,17 +48,16 @@ def update_strava():
     data = get_token()
 
     if data['expires_at'] < time.time():
-        new_tokens = request_token(client_id, client_secret, code)
-        # Update the file
-        write_token(new_tokens)
+        new_tokens = request_token(client_id, client_secret, data['refresh_token'])
+        if new_tokens.status_code == 200:
+            # Update the file
+            write_token(new_tokens)
 
     data = get_token()
 
     access_token = data['access_token']
 
-
-    athlete_url = f"https://www.strava.com/api/v3/athlete?" \
-                f"access_token={access_token}"
+    athlete_url = f"https://www.strava.com/api/v3/athlete?access_token={access_token}"
     try:
         response = requests.get(athlete_url)
         athlete = response.json()
@@ -98,6 +97,3 @@ def update_strava():
                     activity['location_state'], activity['location_country'])
     else: 
         print(response)
-
-
-update_strava()
