@@ -12,6 +12,7 @@ import pandas as pd
 import gpxpy.gpx
 from datetime import datetime, timedelta, time as dt_time
 import gpxpy
+from main.configs import client_id, client_secret, redirect_uri
 # from gpxplotter import read_gpx_file, create_folium_map, add_segment_to_map
 
 
@@ -70,11 +71,35 @@ def get_token():
 
 
 def request_token(client_id, client_secret, code):
-    response = requests.post(url='https://www.strava.com/oauth/token',
-                             data={'client_id': client_id,
-                                   'client_secret': client_secret,
-                                   'code': code,
-                                   'grant_type': 'authorization_code'})
+    try:
+        response = requests.post(
+            url='https://www.strava.com/oauth/token',
+            data={
+                'client_id': client_id,
+                'client_secret': client_secret,
+                'code': code,
+                'grant_type': 'authorization_code'
+            }
+        )
+    except ConnectionError as ce:
+        print(ce)
+
+    return response
+
+def refresh_token(client_id, client_secret, refresh_token):
+    try:
+        response = requests.post(
+            url='https://www.strava.com/oauth/token',
+            data={
+                'client_id': client_id,
+                'client_secret': client_secret,
+                'refresh_token': refresh_token,
+                'grant_type': 'refresh_token'
+            }
+        )
+    except ConnectionError as ce:
+        print(ce)
+
     return response
 
 
@@ -309,8 +334,6 @@ class StravaSync(APIView):
         response = copy.deepcopy(API_I_RESPONSE_TEMPLATE)
         response["status"] = "ok"
 
-        from main.configs import client_id, client_secret, redirect_uri
-
         if not os.path.exists('strava_tokens.json'):
             request_url = f'http://www.strava.com/oauth/authorize?client_id={client_id}' \
                           f'&response_type=code&redirect_uri={redirect_uri}' \
@@ -333,7 +356,7 @@ class StravaSync(APIView):
         data = get_token()
 
         if data['expires_at'] < time():
-            new_tokens = request_token(client_id, client_secret, code)
+            new_tokens = refresh_token(client_id, client_secret, data['refresh_token'])
             # Update the file
             write_token(new_tokens)
 
