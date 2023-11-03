@@ -9,3 +9,4 @@ gpx/*
 logs/*
 strava_tokens.json
 main/configs.py
+main/migrations/*
