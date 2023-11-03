@@ -1,0 +1,126 @@
+[
+    {
+        "model": "main.surfer",
+        "pk": 1,
+        "fields": {
+            "password": "pbkdf2_sha256$180000$GsjHX1PKzFuz$CTIzSqppT6Vo/d9IN73rTS8Fp2zdivNORa8gDD1pNPw=",
+            "last_login": "2020-07-24T09:07:39.613Z",
+            "is_superuser": true,
+            "username": "root@gmail.com",
+            "first_name": "Filipe",
+            "last_name": "Dias",
+            "strava_user_id": "24785208",
+            "email": "root@gmail.com",
+            "is_staff": true,
+            "is_active": true,
+            "date_joined": "2023-01-03T09:06:50.652Z",
+            "groups": [],
+            "user_permissions": []            
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Pescadores",
+            "latitude": 40.99833072924349,
+            "longitude": -8.646823640819484,
+            "short_name": "pescadores",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Silvalde (Letras)",
+            "latitude": 40.98914726087295, 
+            "longitude": -8.645881338377617,
+            "short_name": "silvalde_letras",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Silvalde (Casinhas)",
+            "latitude": 40.98464879330996,
+            "longitude": -8.64774943558214,
+            "short_name": "silvalde_casinhas",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "ETAR",
+            "latitude": 40.973236091627015,
+            "longitude": -8.650278551605197,
+            "short_name": "etar",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Baía de Espinho",
+            "latitude": 41.00835906104302,
+            "longitude": -8.648011923370717,
+            "short_name": "espinho_baia",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "BPA",
+            "latitude": 41.08453082851179,
+            "longitude": -8.656940720398236,
+            "short_name": "bpa",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Paredão",
+            "latitude": 41.11273520228596,
+            "longitude": -8.664723065268628,
+            "short_name": "canide_sul",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Sereia",
+            "latitude": 41.114806965224105,
+            "longitude": -8.665514870002555,
+            "short_name": "sereia",
+            "is_saved": false
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Matosinhos",
+            "latitude": 41.17647800100292,
+            "longitude": -8.692672154206408,
+            "short_name": "matosinhos",
+            "is_saved": true
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Leça",
+            "latitude": 41.18870275436677,
+            "longitude": -8.705888537132923,
+            "short_name": "leca",
+            "is_saved": false
+        }
+    }, {
+        "model": "main.surfspot",
+        "fields": {            
+            "name": "Praia da Barra",
+            "latitude": 40.62916919168113,
+            "longitude": -8.750229407460496,
+            "short_name": "barra_aveiro",
+            "is_saved": true
+        }
+    }
+
+    
+    
+]
+
+
+
