@@ -3,6 +3,9 @@
 
 SurfTracker is an open-source project dedicated to creating an app that revolutionizes the way surfers record, analyze, and share their surfing experiences. 
 
+The challenge here is how to detect waves, inspired on Garmin solution, I implemented this:
+
+![Feed](documentation/solution.png)
 
 ## Project Status
 
@@ -32,7 +35,8 @@ Clone down this repository. You will need `python` and `django` installed global
 Installation:
 
 `pip install -r requirements.txt`
-(TODO)
+
+Run delete_server_and_restart.bat
 
 
 To Start Server:
