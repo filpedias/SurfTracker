@@ -18,6 +18,15 @@
             "user_permissions": []            
         }
     }, {
+        "model": "main.waveconfigs",
+        "fields": {            
+            "name": "Surf Default",
+            "min_speed_to_start_wave": 8.5,
+            "min_speed_to_stop_wave": 9,
+            "minimum_time_of_event_to_consider_wave": 4,
+            "min_max_speed_during_event_to_consider_wave": 11
+        }
+    }, {
         "model": "main.surfspot",
         "fields": {            
             "name": "Pescadores",
