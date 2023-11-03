@@ -1,4 +1,0 @@
-2022-11-14 16:13:24 |  403 - {"detail":"Authentication credentials were not provided."}
-2022-11-14 16:13:34 |  403 - {"detail":"Authentication credentials were not provided."}
-2022-11-14 16:13:46 |  403 - {"detail":"Authentication credentials were not provided."}
-2022-11-14 22:06:21 |  403 - {"detail":"Authentication credentials were not provided."}
