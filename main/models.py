@@ -21,6 +21,7 @@ class SurfSpot(models.Model):
     latitude = models.DecimalField("Latitude", max_digits=22, decimal_places=16)
     longitude = models.DecimalField("Longitude", max_digits=22, decimal_places=16)
     short_name = models.CharField("Image name", max_length=90, default="")
+    is_saved = models.BooleanField("Saved", default=False)
     
     # 40°59'54.4"N 8°38'48.4"W pescadores
     def __str__(self):

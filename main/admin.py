@@ -15,7 +15,7 @@ class SurfSessionAdmin(admin.ModelAdmin):
 
 @admin.register(SurfSpot)
 class SurfSpotAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'latitude', 'longitude')
+    list_display = ('id', 'name', 'latitude', 'longitude', 'is_saved')
 
 
 @admin.register(Wave)
