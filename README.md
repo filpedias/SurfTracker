@@ -31,6 +31,7 @@ Clone down this repository. You will need `python` and `django` installed global
 
 Installation:
 
+`pip install -r requirements.txt`
 (TODO)
 
 
