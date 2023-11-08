@@ -16,8 +16,6 @@
         <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="{% static 'js/leaflet-tilelayer-here.js' %}" crossorigin="anonymous"></script>
-
-</script>
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-bg">
@@ -89,27 +87,30 @@
                                             <div class="session-date">{{session.display_date}}</div>
                                         </div>
                                         <div class="card-body session-card-body">
-                                            <h5 class="session-card-title">
-                                                <a href="/session/{{session.id}}">{{session.name}}</a>
-                                            </h5>
-
-                                            <table class="table-session-stats">
-                                                <thead>
-                                                    <th>Waves</th>
-                                                    <th>Duration</th>
-                                                    <th>Max Speed</th>
-                                                </thead>
-                                                <tbody>
-                                                    <td>{{session.number_of_waves}}</td>
-                                                    <td>{{session.display_duration}}</td>
-                                                    <td>{{session.display_max_speed}}</td>
-                                                </tbody>
-                                            </table>
-                                            <div id="map_{{session.id}}" class="session-map" >
-                                            </div>
-                                            <div class="text-center">
-                                                <!--img class="session-img" src="{% static 'sessions/'%}{{session.strava_activity_id}}.png"-->
-                                            </div>
+                                            <div class="col-lg-12 col-sm-12 d-flex">
+                                                <div class="col-lg-5 col-sm-5">
+                                                    <h5 class="session-card-title">
+                                                        <a href="/session/{{session.id}}">{{session.name}}</a>
+                                                    </h5>
+                                                    <span class="session-card-subtitle">{{session.location }}</span>
+                                                    <table class="table-session-stats">
+                                                        <thead>
+                                                            <th>Waves</th>
+                                                            <th>Duration</th>
+                                                            <th>Max Speed</th>
+                                                        </thead>
+                                                        <tbody>
+                                                            <td>{{session.number_of_waves}}</td>
+                                                            <td>{{session.display_duration}}</td>
+                                                            <td>{{session.display_max_speed}}</td>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="col-lg-7 col-sm-7">
+                                                    <div id="map_{{session.id}}" class="session-map" >
+                                                    </div>
+                                                </div>
+                                            </div>                                         
                                         </div>
                                     </div>
                                 {% endfor %}

@@ -109,10 +109,16 @@
 }
 
 .session-card-title {
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.5rem;
   margin-left: 3rem;
   color:#474545;
   font-weight: 400;
+}
+.session-card-subtitle {
+  margin-bottom: 1.8rem;
+  margin-left: 3rem;
+  color:gray;
+  font-weight: 100;
   
 }
 .session-card-title a {
@@ -131,6 +137,7 @@
 .table-session-stats{
   margin-left: 3rem;
   margin-bottom: 2rem;
+  font-size: small;
 }
 .table-session-stats th{
   font-weight: 400;
@@ -152,8 +159,7 @@
 }
 
 .session-map{
-  height: 16rem;
-  margin-left: 3rem;
+  height: 20rem;
 }
 .session-page-session-map{
   height: 36rem;
@@ -182,3 +188,12 @@
 .mr-a {
   margin-right:auto;
 }
+
+#layoutSidenav{
+  background-color: rgb(189, 209, 226);
+}
+
+body {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
+}
+
