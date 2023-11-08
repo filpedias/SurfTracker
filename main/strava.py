@@ -10,6 +10,7 @@ import pandas as pd
 import gpxpy.gpx
 import gpxpy
 from time import time, sleep
+from main.settings import TZ_LOCAL
 
 global access_token
 global exceed_counter
@@ -64,6 +65,7 @@ def get_token():
     return data
 
 def update_strava():
+    response = {'status': 'ok', "msg": []}
     surfer = Surfer.objects.get(strava_user_id=strava_user_id)
 
     if not os.path.exists('strava_tokens.json'):
@@ -86,11 +88,14 @@ def update_strava():
     data = get_token()
 
     if data['expires_at'] < time():
-        print("========== Token expired requesting new.. ==========")
+        response["msg"].append("Token on strava_tokens expired")
         new_tokens = refresh_token(client_id, client_secret, surfer.strava_code)
         if new_tokens.status_code == 200:
             # Update the file
             write_token(new_tokens)
+        else:
+            response["msg"].append("Token refresh failed")
+            response["status"] = "error"
 
     data = get_token()
 
@@ -98,9 +103,9 @@ def update_strava():
 
     athlete_url = f"https://www.strava.com/api/v3/athlete?access_token={access_token}"
     try:
-        response = requests.get(athlete_url)
-        if response.status_code == 200: 
-            athlete = response.json()
+        athlete_response = requests.get(athlete_url)
+        if athlete_response.status_code == 200: 
+            athlete = athlete_response.json()
             
             print(athlete)
             print('RESTful API:', athlete_url)
@@ -112,18 +117,18 @@ def update_strava():
 
             activities_url = f"https://www.strava.com/api/v3/athlete/activities"
             print('RESTful API:', activities_url)
-            response = requests.get(activities_url, headers={
+            activities_response = requests.get(activities_url, headers={
                 "accept": "application/json",
                 "authorization": f"Bearer {access_token}"
             })
-            if response.status_code == 200:
-                activities = response.json()
+            if activities_response.status_code == 200:
+                activities = activities_response.json()
                 surfing_activities = list()
 
                 for activity in activities:
                     if 'type' in activity and activity['type'] == 'Surfing':
                         surfing_activities.append(activity)
-
+                        '''
                         print('=' * 5, 'SINGLE ACTIVITY', '=' * 5)
                         print('Athlete:', athlete['firstname'], athlete['lastname'])
                         print('Name:', activity['name'])
@@ -134,16 +139,27 @@ def update_strava():
                         print('Moving time:', round(activity['moving_time'] / 60, 2), 'minutes')
                         print('Location:', activity['location_city'],
                             activity['location_state'], activity['location_country'])
+                        '''
                 
                 new_sessions_added = list()
                 if surfer:
                     new_sessions_added = load_surfing_activities_from_strava(surfing_activities, surfer, access_token)
+                    response["msg"].append(f"Added {len(new_sessions_added)} new surf sessions ")
             else:
-                print(f"{activities_url} returned {response}")
+                error_msg = f"{activities_url} returned {response}"
+                response["msg"].append(error_msg)
+                response["status"] = "error"
+                print(error_msg)
         else: 
-            print(f"{athlete_url} returned {response}")
+            error_msg = f"{athlete_url} returned {response}"
+            response["msg"].append(error_msg)
+            response["status"] = "error"
+            print(error_msg)
     except ConnectionError as ce:
-        print(ce)
+            error_msg = f"ConnectionError: {ce}"
+            response["msg"].append(error_msg)
+            response["status"] = "error"
+            print(error_msg)
             
 
     
@@ -181,7 +197,7 @@ def load_surfing_activities_from_strava(activities, surfer, access_token):
                             wp.wave = w
                             wp.latitude = wave_point['latitude']
                             wp.longitude = wave_point['longitude']
-                            wp.time = datetime.strptime(wave_point['time'], '%Y-%m-%d %H:%M:%S')
+                            wp.time = datetime.strptime(wave_point['time'], '%Y-%m-%d %H:%M:%S').replace(tzinfo=TZ_LOCAL)
                             wp.save()
 
                     new_surf_activities.append(s)

@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+import mimetypes
+import os
+import pytz
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -109,6 +112,9 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
 
+LOCAL_TIME_ZONE = os.environ.get("LOCAL_TIME_ZONE", "Europe/Lisbon")
+TZ_LOCAL = pytz.timezone(LOCAL_TIME_ZONE)
+
 USE_I18N = True
 
 USE_TZ = True
@@ -138,7 +144,7 @@ API_I_RESPONSE_TEMPLATE = {
 AUTH_USER_MODEL = 'main.Surfer'
 
 
-import mimetypes
+
 mimetypes.add_type("text/css", ".css", True)
 
 SITE_VERSION = '1.0.0'
