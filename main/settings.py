@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-2#+3p!9k+)1*a_#e9-aejxro(@xf63f5b4fyv1fv-56xm3d5s9'
+SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-2#+3p!9k+)1*a_#e9-aejxro(@xf63f5b4fyv1fv-56xm3d5s9')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -142,6 +142,9 @@ API_I_RESPONSE_TEMPLATE = {
 }
 
 AUTH_USER_MODEL = 'main.Surfer'
+LOGIN_URL = '/user/login/'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/user/logout/'
 
 
 
