@@ -9,13 +9,17 @@
         <meta name="author" content="" />
         <title>Home | SurfTracker</title>
         <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
-        <link href="{% static 'css/home.css' %}" rel="stylesheet" /><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <link href="{% static 'css/home.css' %}" rel="stylesheet" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
         <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
         <script src="{% static 'js/leaflet-tilelayer-here.js' %}" crossorigin="anonymous"></script>
+        
+        
     </head>
     <body class="sb-nav-fixed">
         <nav class="sb-topnav navbar navbar-expand navbar-bg">
@@ -25,18 +29,17 @@
               
               <!-- Navbar-->
               <ul class="navbar-nav">
-
-                  <li class="nav-item dropdown">
-                      <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img class="avatar-img avatar-sm" src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
-                      </a>
-                      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                          <li><a class="dropdown-item" href="#!">Settings</a></li>
-                          <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                          <li><hr class="dropdown-divider" /></li>
-                          <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
-                      </ul>
-                  </li>
+                    
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      <img class="avatar-img avatar-sm" src="{% static 'avatars/'%}{{vc.surfer.id}}.png">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#!">Settings</a></li>
+                        <li><a class="dropdown-item" href="#!">Activity Log</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li><a class="dropdown-item" href="/user/logout">Logout</a></li>
+                    </ul>
               </ul>
             </div>
         </nav>
@@ -132,7 +135,7 @@
                 </footer>
             </div>
         </div>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        
 
     </body>
 </html>

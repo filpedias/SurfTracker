@@ -5,42 +5,52 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib import messages
 from .models import Surfer, SurfSession, Wave, WavePoint
 from main.forms import AuthenticateForm
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login as login_auth
 from django.views.decorators.http import require_http_methods
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-import main.strava
 
 def login(request):
     vc = {}
     user = request.user
+    print("======= beginig of login function =======")
+    print("user.is_authenticated", user.is_authenticated)
     if user.is_authenticated:
         return HttpResponseRedirect('/')
 
     next_page = reverse('home', args=())
     if 'next' in request.GET:
         next_page = request.GET['next']
-
+    print("next_page", next_page)
+    print("request.method", request.method)
     if request.method == 'POST':
 
         data = request.POST.copy()
+        print("'username' in data", 'username' in data, "'password' in data", 'password' in data)
         if 'username' in data and 'password' in data:
             username = data['username']
-
+            
             form = AuthenticateForm(data)
             if form.is_valid():
                 user_auth = authenticate(email=username, password=form.cleaned_data['password'])
+                print("user_auth", user_auth)
                 if user_auth is None:
                     user = Surfer.objects.get(username=username)
+                    '''
                     request.user = user
                     request.method = 'GET'
-                    return home(request)
+                    '''
+                    login_auth(request=request, user=user)
+                    print("logged in")
+                    return HttpResponseRedirect(next_page)
+            else: 
+                print("form not valid", form)
 
 
         else:
             # O form nao tem os campos necessarios
-                return HttpResponseRedirect('/')
+                form.add_error('password', _(u"Your account is blocked, please contact support"))
     else:
         # Pagina com o form de login
         form = AuthenticateForm(initial={'username': request.GET.get('username')})
@@ -51,12 +61,12 @@ def login(request):
     })
     return render(request, 'login.html', {'vc': vc})
 
-
-@login_required
-def logout_view(request):
-    vc = {}
-    logout(request)
-    return render(request, 'home.html', {'vc': vc})
+from django.views.decorators.cache import never_cache
+@never_cache
+def logout(request):
+    from django.contrib.auth import logout as logout_auth
+    logout_auth(request)
+    return HttpResponseRedirect('/')
 
 
 def get_session_gpx(s):
