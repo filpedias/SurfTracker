@@ -14,6 +14,15 @@ from pathlib import Path
 import mimetypes
 import os
 import pytz
+import environ
+
+# Initialise environment variables
+env = environ.Env()
+environ.Env.read_env()
+
+# Initialise environment variables
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -23,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY", 'django-insecure-2#+3p!9k+)1*a_#e9-aejxro(@xf63f5b4fyv1fv-56xm3d5s9')
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
