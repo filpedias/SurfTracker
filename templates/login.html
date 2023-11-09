@@ -7,8 +7,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Login - SB Admin</title>
+        <title>Login | SurfTracker</title>
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/home.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/login.css' %}" rel="stylesheet" />
+
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="bg-primary">
@@ -16,10 +19,12 @@
             <div id="layoutAuthentication_content">
                 <main>
                     <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-5">
+                        <div class="row justify-content-center mt-5">
+                            <div class="col-lg-5 mt-5">
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                    <div class="card-header"><h3 class="text-center font-weight-light my-4">Login</h3></div>
+                                    <div class="card-header w-100">
+                                        <h3 class="text-center font-weight-light my-4 w-100 logo-font">SurfTracker</h3>
+                                    </div>
                                     <div class="card-body">
                                         <form role="form" method="post">
                                             {% csrf_token %}

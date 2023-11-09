@@ -1,0 +1,10 @@
+
+@font-face {
+    font-family: "Apple Tea";
+    src: url(/static/fonts/AppleTea-z8R1a.ttf);
+    
+}
+.logo-font {
+    font-family: "Apple Tea";
+    color: dodgerblue;
+}
