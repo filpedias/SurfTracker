@@ -11,36 +11,33 @@
         <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
         <link href="{% static 'css/home.css' %}" rel="stylesheet" />
         <link href="{% static 'css/login.css' %}" rel="stylesheet" />
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
 
         <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
     </head>
-    <body class="bg-primary">
+    <body class="">
         <div id="layoutAuthentication">
             <div id="layoutAuthentication_content">
                 <main>
                     <div class="container">
                         <div class="row justify-content-center mt-5">
                             <div class="col-lg-5 mt-5">
-                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card mt-5 login-card">
                                     <div class="card-header w-100">
                                         <h3 class="text-center font-weight-light my-4 w-100 logo-font">SurfTracker</h3>
                                     </div>
                                     <div class="card-body">
                                         <form role="form" method="post">
                                             {% csrf_token %}
-                                            <div class="form-floating mb-3">
+                                            <div class="form-floating m-3">
                                                 <input name="username" class="form-control" id="inputEmail" type="email" placeholder="name@example.com" />
                                                 <label for="inputEmail">Email address</label>
                                             </div>
-                                            <div class="form-floating mb-3">
+                                            <div class="form-floating m-3">
                                                 <input name="password" class="form-control" id="inputPassword" type="password" placeholder="Password" />
                                                 <label for="inputPassword">Password</label>
                                             </div>
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" value="" />
-                                                <label class="form-check-label" for="inputRememberPassword">Remember Password</label>
-                                            </div>
-                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                            <div class="d-flex align-items-center justify-content-between m-3 mb-0">
                                                 <a class="small" href="password.html">Forgot Password?</a>
                                                 <button type="submit" name="login" class="btn btn-primary">Login</button>
                                             </div>

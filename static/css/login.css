@@ -1,4 +1,6 @@
-
+:root {
+    --logo-color:  dodgerblue;
+}
 @font-face {
     font-family: "Apple Tea";
     src: url(/static/fonts/AppleTea-z8R1a.ttf);
@@ -6,5 +8,23 @@
 }
 .logo-font {
     font-family: "Apple Tea";
-    color: dodgerblue;
+    color: var(--logo-color);
 }
+
+.login-card {
+    border: 0.3rem solid var(--logo-color) !important;
+    border-radius: 3.5rem;
+}
+.login-card > .card-header, .login-card > .card-footer {
+    border-radius: 3.5rem;
+    background-color: unset !important;
+}
+
+.login-card input{
+    border-radius: 3.5rem;
+}
+
+.inputEmail, .inputPassword {
+    font-size: 1rem
+}
+
