@@ -1,0 +1,42 @@
+{% load i18n %}{% load l10n %}{% load static %}{% spaceless %}{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+        <meta name="description" content="SurfTracker - Track your surf sessions">
+        <meta name="author" content="filipedias_97">
+        <meta name="keyword" content="Surf, Session, Speed, Stats, Waves">
+
+        <title>
+            {% block title %}{% endblock %} | SurfTracker
+        </title>
+
+        {% block seo_tags %}{% endblock %}
+        
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+
+        <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+        <link href="{% static 'css/home.css' %}" rel="stylesheet" />
+        {% block stylesheets %}{% endblock stylesheets %}
+        
+        
+        <script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" ></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        {% block javascripts_top %}{% endblock javascripts_top %}
+
+        <script>
+
+        </script>
+    </head>
+
+    <body class="sb-nav-fixed">
+        {% block content %}{% endblock %}
+    </body>
+</html>
+{% endspaceless %}
+
+{% block javascripts_bottom %}{% endblock javascripts_bottom %}
+    
