@@ -14,35 +14,25 @@ from django.contrib.auth import logout
 def login(request):
     vc = {}
     user = request.user
-    print("======= beginig of login function =======")
-    print("user.is_authenticated", user.is_authenticated)
+
     if user.is_authenticated:
         return HttpResponseRedirect('/')
 
     next_page = reverse('home', args=())
     if 'next' in request.GET:
         next_page = request.GET['next']
-    print("next_page", next_page)
-    print("request.method", request.method)
-    if request.method == 'POST':
 
+    if request.method == 'POST':
         data = request.POST.copy()
-        print("'username' in data", 'username' in data, "'password' in data", 'password' in data)
         if 'username' in data and 'password' in data:
             username = data['username']
             
             form = AuthenticateForm(data)
             if form.is_valid():
                 user_auth = authenticate(email=username, password=form.cleaned_data['password'])
-                print("user_auth", user_auth)
                 if user_auth is None:
                     user = Surfer.objects.get(username=username)
-                    '''
-                    request.user = user
-                    request.method = 'GET'
-                    '''
                     login_auth(request=request, user=user)
-                    print("logged in")
                     return HttpResponseRedirect(next_page)
             else: 
                 print("form not valid", form)
@@ -88,8 +78,6 @@ def get_session_gpx(s):
 @require_http_methods(["GET"])
 @login_required
 def home(request):
-    from main.strava import update_strava
-    update_strava()
     surfer_sessions = SurfSession.objects.filter(surfer=request.user).order_by('-date')
     gpxs_data = []
     for s in surfer_sessions:

@@ -104,19 +104,9 @@ def update_strava():
     athlete_url = f"https://www.strava.com/api/v3/athlete?access_token={access_token}"
     try:
         athlete_response = requests.get(athlete_url)
-        if athlete_response.status_code == 200: 
-            athlete = athlete_response.json()
-            
-            print(athlete)
-            print('RESTful API:', athlete_url)
-            print('=' * 5, 'ATHLETE INFO', '=' * 5)
-            print('Name:', athlete['firstname'], " ", athlete['lastname'])
-            print('Gender:', athlete['sex'])
-            print('City:', athlete['city'], athlete['country'])
-            print('Strava athlete from:', athlete['created_at'])
+        if athlete_response.status_code == 200:
 
             activities_url = f"https://www.strava.com/api/v3/athlete/activities"
-            print('RESTful API:', activities_url)
             activities_response = requests.get(activities_url, headers={
                 "accept": "application/json",
                 "authorization": f"Bearer {access_token}"
@@ -128,41 +118,67 @@ def update_strava():
                 for activity in activities:
                     if 'type' in activity and activity['type'] == 'Surfing':
                         surfing_activities.append(activity)
-                        '''
-                        print('=' * 5, 'SINGLE ACTIVITY', '=' * 5)
-                        print('Athlete:', athlete['firstname'], athlete['lastname'])
-                        print('Name:', activity['name'])
-                        print('Date:', activity['start_date'])
-                        print('Disance:', activity['distance'], 'm')
-                        print('Average Speed:', activity['average_speed'], 'm/s')
-                        print('Max speed:', activity['max_speed'], 'm/s')
-                        print('Moving time:', round(activity['moving_time'] / 60, 2), 'minutes')
-                        print('Location:', activity['location_city'],
-                            activity['location_state'], activity['location_country'])
-                        '''
                 
                 new_sessions_added = list()
                 if surfer:
                     new_sessions_added = load_surfing_activities_from_strava(surfing_activities, surfer, access_token)
                     response["msg"].append(f"Added {len(new_sessions_added)} new surf sessions ")
             else:
-                error_msg = f"{activities_url} returned {response}"
+                error_msg = f"{activities_url} returned {athlete_response.status_code}"
                 response["msg"].append(error_msg)
                 response["status"] = "error"
-                print(error_msg)
         else: 
-            error_msg = f"{athlete_url} returned {response}"
+            error_msg = f"Athlete activities request returned {athlete_response.status_code}"
             response["msg"].append(error_msg)
             response["status"] = "error"
-            print(error_msg)
     except ConnectionError as ce:
             error_msg = f"ConnectionError: {ce}"
             response["msg"].append(error_msg)
             response["status"] = "error"
-            print(error_msg)
+    return response
             
 
-    
+def get_surfing_activities_from_strava(self, activities, surfer):
+
+    new_surf_activities = list()
+    surf_sessions = SurfSession.objects.filter(surfer=surfer).values_list('strava_activity_id', flat=True)
+
+    for activity in activities:
+        if activity['type'] == 'Surfing':
+            if str(activity['id']) not in surf_sessions:
+                activity_duration = determine_duration(activity)
+                if activity_duration > dt_time(0, 20):
+                    activity_analysis = self.get_activity_analysis_data(activity)
+                    s = SurfSession()
+                    s.surfer = surfer
+                    s.date = activity['start_date']
+                    s.strava_activity_id = activity['id']
+                    s.name = activity['name']
+                    s.duration = activity_duration
+                    s.location = activity_analysis['location']
+                    s.has_gpx_data = activity_analysis['gpx_created']
+                    s.number_of_waves = activity_analysis['number_of_waves']
+                    s.max_speed = activity_analysis['max_speed']
+                    s.save()
+
+                    for wave in activity_analysis['waves_points']:
+                        w = Wave()
+                        w.session = s
+                        w.save()
+                        # w.duration = wave['duration']
+                        for wave_point in wave:
+                            wp = WavePoint()
+                            wp.wave = w
+                            wp.latitude = wave_point['latitude']
+                            wp.longitude = wave_point['longitude']
+                            wp.time = datetime.strptime(wave_point['time'], '%Y-%m-%d %H:%M:%S')
+                            wp.save()
+
+                    new_surf_activities.append(s)
+
+    return new_surf_activities
+
+
 def load_surfing_activities_from_strava(activities, surfer, access_token):
 
     new_surf_activities = list()
@@ -213,8 +229,8 @@ def determine_duration(activity):
 
     
 def get_activity_analysis_data(activity, access_token):
+    
     gpx_creation = create_gpx_activity_file(activity, access_token)
-
     gpx_analysis = analyze_gpx(activity['id'])
 
     return {

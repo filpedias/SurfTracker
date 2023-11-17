@@ -63,12 +63,45 @@
                 {% include './site_footer.html' %}
             </div>
         </div>
+
+        {% include './strava_update_modal.html' %}
         
 {% endspaceless %}
 {% endblock %}
 {% block javascripts_bottom %}
 <script>
-
+    update_data_from_strava();
+    var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+    var toastList = toastElList.map(function (toastEl) {
+        return new bootstrap.Toast(toastEl, "show")
+    })
+    
+    function update_data_from_strava() {
+        let url = "/api/i/strava/sync/"; 
+        
+        $.ajax({
+          url: url,
+          type: "GET",
+          async: true,
+          contentType: 'application/json; charset=utf-8',
+          success: function(response) {
+            response.msg.forEach(function(msg){
+                p = document.createElement('p')
+                $(p).html(msg)
+                $("#strava_modal_body").append(p)
+            })
+            $("#strava_modal").toast("show")
+            
+            //strava_toast.show()
+          },
+          error: function(response){
+            //showToast(gettext("Unable to load perfomance dashboard charts"), "danger")
+          },
+          complete: function(response){   
+          },
+        });
+       
+    }
     function click_update_strava(){
         window.location='/strava/login/';
     }

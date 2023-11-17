@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     # url(r'^admin_tools/', include('admin_tools.urls')),
-    path('django/', admin.site.urls),
+    path('admin/', admin.site.urls),
     re_path(r'^user/login/$', views.login, name="login"),
     re_path(r'^user/logout/$', views.logout, name="logout"),
     re_path(r'^$', views.home, name="home"),

@@ -76,6 +76,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'main.context_processors.extra'                
             ]
         },
     }
@@ -160,4 +161,9 @@ LOGOUT_URL = '/user/logout/'
 mimetypes.add_type("text/css", ".css", True)
 
 SITE_VERSION = '1.0.0'
+
+API_VERSION = {
+    'i': 'v1',
+    'e': 'v1'
+}
 
