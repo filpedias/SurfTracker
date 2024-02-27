@@ -66,10 +66,10 @@ class SurfSession(models.Model):
     
     
     def get_session_gpx(self):
-        gpx_session_waves = list()
+        gpx_session_waves = []
         session_waves = Wave.objects.filter(session=self)
         for w in session_waves:
-            session_wave_gpx = list()
+            session_wave_gpx = []
             session_wave = WavePoint.objects.filter(wave=w)
             for wp in session_wave:
                 session_wave_gpx.append({

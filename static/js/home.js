@@ -33,12 +33,6 @@ function update_data_from_strava() {
     });
 }
 
-/**
- * Redirects the user to the Strava login page.
- */
-function click_update_strava() {
-    window.location = '/strava/login/';
-}
 
 /**
  * Processes GPX data for sessions by iterating through each session and drawing the session map.

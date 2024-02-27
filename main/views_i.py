@@ -92,7 +92,7 @@ class ScanGPXs(APIView):
         response["status"] = "ok"
 
         sessions = SurfSession.objects.all()
-        updated_sessions = list()
+        updated_sessions = []
         for session in sessions:
             gpx_analysis = analyze_gpx(session.strava_activity_id)
 
@@ -122,7 +122,7 @@ class ProcessGPXData(APIView):
     def get(self, request, format=None):
 
         response = copy.deepcopy(API_I_RESPONSE_TEMPLATE)
-        
+
         surfer_sessions = SurfSession.objects.filter(surfer=request.user) \
                             .order_by('-date')
         gpxs_data = []
