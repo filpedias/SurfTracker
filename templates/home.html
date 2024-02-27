@@ -8,9 +8,13 @@
 
 {% block javascripts_top %}
 <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" crossorigin=""></script>
+
 {% endblock  %}
 {% block stylesheets %}     
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" crossorigin=""/>
+
 {% endblock  %}
 {% block content %}
 {% spaceless %}
@@ -85,20 +89,14 @@
           async: true,
           contentType: 'application/json; charset=utf-8',
           success: function(response) {
-            response.msg.forEach(function(msg){
-                p = document.createElement('p')
-                $(p).html(msg)
-                $("#strava_modal_body").append(p)
-            })
-            $("#strava_modal").toast("show")
-            
-            //strava_toast.show()
-          },
-          error: function(response){
-            //showToast(gettext("Unable to load perfomance dashboard charts"), "danger")
-          },
-          complete: function(response){   
-          },
+            if (response["status"] == "ok"){
+                toastr.success('Activities synced with strava', 'Updated', {timeOut: 2000})
+            } else if (response["status"] == "error"){
+                response["msg"].forEach(function(error_msg){
+                    toastr.error(error_msg, 'Error', {timeOut: 2000})
+                })                
+            }
+          }
         });
        
     }
