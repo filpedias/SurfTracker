@@ -113,3 +113,31 @@ class ScanGPXs(APIView):
         response['updated_sessions'] = updated_sessions
 
         return Response(response)
+
+
+class ProcessGPXData(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, format=None):
+
+        response = copy.deepcopy(API_I_RESPONSE_TEMPLATE)
+        
+        surfer_sessions = SurfSession.objects.filter(surfer=request.user) \
+                            .order_by('-date')
+        gpxs_data = []
+        for s in surfer_sessions:
+            gpx_session_waves = s.get_session_gpx()
+            session_data = {
+                'session_id': s.id,
+                'name': s.name,
+                'spot_lat': float(s.location.latitude),
+                'spot_long': float(s.location.longitude),
+                'wave_points': gpx_session_waves
+            }
+            gpxs_data.append(session_data)
+
+        response["data"]["gpxs_data"] = gpxs_data
+        response["status"] = "ok"
+
+        return Response(response)

@@ -63,6 +63,23 @@ class SurfSession(models.Model):
 
     def __str__(self):
         return f"{self.display_date()} | {self.surfer.first_name}"
+    
+    
+    def get_session_gpx(self):
+        gpx_session_waves = list()
+        session_waves = Wave.objects.filter(session=self)
+        for w in session_waves:
+            session_wave_gpx = list()
+            session_wave = WavePoint.objects.filter(wave=w)
+            for wp in session_wave:
+                session_wave_gpx.append({
+                    "latitude": float(wp.latitude),
+                    "longitude": float(wp.longitude),
+                    "time": wp.time.strftime('%Y-%m-%d %H:%M:%S'),
+                })
+                gpx_session_waves.append(session_wave_gpx)
+        
+        return gpx_session_waves
 
 
 class Wave(models.Model):

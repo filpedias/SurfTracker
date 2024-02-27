@@ -59,43 +59,15 @@ def logout(request):
     return HttpResponseRedirect('/')
 
 
-def get_session_gpx(s):
-    gpx_session_waves = list()
-    session_waves = Wave.objects.filter(session=s)
-    for w in session_waves:
-        session_wave_gpx = list()
-        session_wave = WavePoint.objects.filter(wave=w)
-        for wp in session_wave:
-            session_wave_gpx.append({
-                "latitude": float(wp.latitude),
-                "longitude": float(wp.longitude),
-                "time": wp.time.strftime('%Y-%m-%d %H:%M:%S'),
-            })
-            gpx_session_waves.append(session_wave_gpx)
-    
-    return gpx_session_waves
-    
 @require_http_methods(["GET"])
 @login_required
 def home(request):
+    
     surfer_sessions = SurfSession.objects.filter(surfer=request.user).order_by('-date')
-    gpxs_data = []
-    for s in surfer_sessions:
-        
-        gpx_session_waves = get_session_gpx(s)
-        session_data = {
-            'session_id': s.id,
-            'name': s.name,
-            'spot_lat': float(s.location.latitude),
-            'spot_long': float(s.location.longitude),
-            'wave_points': gpx_session_waves
-        }
-        gpxs_data.append(session_data)
 
     vc = {
         'surfer': request.user,
-        'sessions': surfer_sessions, 
-        'gpxs_data': gpxs_data
+        'sessions': surfer_sessions,
     }
 
     return render(request, 'home.html', {'vc': vc})
