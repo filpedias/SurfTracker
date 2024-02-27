@@ -36,6 +36,8 @@ Installation:
 
 `pip install -r requirements.txt`
 
+Create a configs.py file under the directory main/
+
 Run delete_server_and_restart.bat
 
 

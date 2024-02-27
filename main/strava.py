@@ -1,16 +1,19 @@
+"""
+File responsible to handle all strava communications 
+"""
+
 import json
 import os
 import requests
-import time
-from urllib3.connection import ConnectionError
-from main.models import Surfer, SurfSession, SurfSpot, Wave, WaveConfigs, WavePoint
-from main.configs import client_id, client_secret, redirect_uri, strava_user_id
-from datetime import datetime, timedelta, time as dt_time
 import pandas as pd
 import gpxpy.gpx
 import gpxpy
+from datetime import datetime, timedelta, time as dt_time
 from time import time, sleep
+from urllib3.connection import ConnectionError
 from main.settings import TZ_LOCAL
+from main.models import Surfer, SurfSession, SurfSpot, Wave, WaveConfigs, WavePoint
+from main.configs import CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, STRAVA_USER_ID
 
 global access_token
 global exceed_counter
@@ -19,13 +22,14 @@ global data_folder
 exceed_counter = 0
 data_folder = 'gpx/'
 
-def request_token(client_id, client_secret, code):
+
+def request_token(code):
     try:
         response = requests.post(
             url='https://www.strava.com/oauth/token',
             data={
-                'client_id': client_id,
-                'client_secret': client_secret,
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
                 'code': code,
                 'grant_type': 'authorization_code'
             }
@@ -35,13 +39,13 @@ def request_token(client_id, client_secret, code):
 
     return response
 
-def refresh_token(client_id, client_secret, refresh_token):
+def refresh_token(refresh_token):
     try:
         response = requests.post(
             url='https://www.strava.com/oauth/token',
             data={
-                'client_id': client_id,
-                'client_secret': client_secret,
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
                 'grant_type': 'refresh_token',
                 'refresh_token': refresh_token
                 
@@ -66,11 +70,11 @@ def get_token():
 
 def update_strava():
     response = {'status': 'ok', "msg": []}
-    surfer = Surfer.objects.get(strava_user_id=strava_user_id)
+    surfer = Surfer.objects.get(strava_user_id=STRAVA_USER_ID)
 
     if not os.path.exists('strava_tokens.json'):
-        request_url = f'http://www.strava.com/oauth/authorize?client_id={client_id}' \
-                    f'&response_type=code&redirect_uri={redirect_uri}' \
+        request_url = f'http://www.strava.com/oauth/authorize?client_id={CLIENT_ID}' \
+                    f'&response_type=code&redirect_uri={REDIRECT_URI}' \
                     f'&scope=profile:read_all,activity:read_all'
 
         print('Click here:', request_url)
@@ -78,7 +82,7 @@ def update_strava():
         print('P.S: you can find the code in the URL')
         code = input('Insert the code from the url: ')
 
-        tokens = request_token(client_id, client_secret, code)
+        tokens = request_token(code)
 
         # Save json response as a variable
         strava_tokens = tokens.json()
@@ -89,7 +93,7 @@ def update_strava():
 
     if data['expires_at'] < time():
         response["msg"].append("Token on strava_tokens expired")
-        new_tokens = refresh_token(client_id, client_secret, surfer.strava_code)
+        new_tokens = refresh_token(surfer.strava_code)
         if new_tokens.status_code == 200:
             # Update the file
             write_token(new_tokens)
@@ -243,6 +247,7 @@ def get_activity_analysis_data(activity, access_token):
 
     }
 
+
 def create_gpx_activity_file(activity, access_token):
 
         strava_id = activity['id']
@@ -303,9 +308,6 @@ def create_gpx_activity_file(activity, access_token):
             return {'gpx_created': False, 'start_coordinates': start_coordinates}
 
         return {'gpx_created': True, 'start_coordinates': start_coordinates}
-
-    
-
 
 
 def analyze_gpx(strava_id):

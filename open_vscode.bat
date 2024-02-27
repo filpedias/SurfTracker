@@ -1,1 +1,1 @@
-code .
+start code .

@@ -11,7 +11,7 @@ import os
 
 from datetime import datetime, timedelta, time as dt_time
 
-from main.configs import client_id, client_secret, redirect_uri
+from main.configs import CLIENT_ID, CLIENT_SECRET
 # from gpxplotter import read_gpx_file, create_folium_map, add_segment_to_map
 
 
@@ -30,13 +30,13 @@ def get_token():
     return data
 
 
-def request_token(client_id, client_secret, code):
+def request_token(code):
     try:
         response = requests.post(
             url='https://www.strava.com/oauth/token',
             data={
-                'client_id': client_id,
-                'client_secret': client_secret,
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
                 'code': code,
                 'grant_type': 'authorization_code'
             }
@@ -46,13 +46,13 @@ def request_token(client_id, client_secret, code):
 
     return response
 
-def refresh_token(client_id, client_secret, refresh_token):
+def refresh_token(refresh_token):
     try:
         response = requests.post(
             url='https://www.strava.com/oauth/token',
             data={
-                'client_id': client_id,
-                'client_secret': client_secret,
+                'client_id': CLIENT_ID,
+                'client_secret': CLIENT_SECRET,
                 'refresh_token': refresh_token,
                 'grant_type': 'refresh_token'
             }
