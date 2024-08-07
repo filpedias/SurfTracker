@@ -15,11 +15,9 @@ from main.configs import DJANGO_SECRET
 import mimetypes
 import os
 import pytz
-import environ
 
-# Initialise environment variables
-env = environ.Env()
-environ.Env.read_env()
+
+
 
 # Initialise environment variables
 
@@ -167,4 +165,3 @@ API_VERSION = {
     'i': 'v1',
     'e': 'v1'
 }
-

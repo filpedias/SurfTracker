@@ -23,14 +23,14 @@ exceed_counter = 0
 data_folder = 'gpx/'
 
 
-def request_token(code):
+def request_token(strava_code):
     try:
         response = requests.post(
             url='https://www.strava.com/oauth/token',
             data={
                 'client_id': CLIENT_ID,
                 'client_secret': CLIENT_SECRET,
-                'code': code,
+                'code': strava_code,
                 'grant_type': 'authorization_code'
             }
         )
@@ -38,6 +38,7 @@ def request_token(code):
         print(ce)
 
     return response
+
 
 def refresh_token(refresh_token):
     try:
@@ -48,7 +49,6 @@ def refresh_token(refresh_token):
                 'client_secret': CLIENT_SECRET,
                 'grant_type': 'refresh_token',
                 'refresh_token': refresh_token
-                
             }
         )
     except ConnectionError as ce:
@@ -72,7 +72,7 @@ def update_strava():
     response = {'status': 'ok', "msg": []}
     surfer = Surfer.objects.get(strava_user_id=STRAVA_USER_ID)
 
-    if not os.path.exists('strava_tokens.json'):
+    if not os.path.exists('strava_tokens.json'):        
         request_url = f'http://www.strava.com/oauth/authorize?client_id={CLIENT_ID}' \
                     f'&response_type=code&redirect_uri={REDIRECT_URI}' \
                     f'&scope=profile:read_all,activity:read_all'
@@ -91,8 +91,10 @@ def update_strava():
 
     data = get_token()
 
-    if data['expires_at'] < time():
-        response["msg"].append("Token on strava_tokens expired")
+    if 'expires_at' in data and data['expires_at'] < time():
+        response["msg"].append(f"Token on strava_tokens expired, refreshing token for surfer {surfer.strava_code}")
+        print(f"Token on strava_tokens expired, refreshing token for surfer {surfer.strava_code}")
+        print(surfer)
         new_tokens = refresh_token(surfer.strava_code)
         if new_tokens.status_code == 200:
             # Update the file

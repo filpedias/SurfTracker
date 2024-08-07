@@ -46,6 +46,7 @@ def request_token(code):
 
     return response
 
+
 def refresh_token(refresh_token):
     try:
         response = requests.post(
