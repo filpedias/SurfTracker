@@ -64,7 +64,7 @@ class SurfSession(models.Model):
         return f"{self.max_speed} km/h"
 
     def __str__(self):
-        return f"{self.display_date()} | {self.surfer.first_name}"
+        return f"{self.display_date()} | {self.surfer.first_name} @ {self.location.name}"
     
     
     def get_session_gpx(self):
@@ -92,16 +92,15 @@ class Wave(models.Model):
     def __str__(self):
         return f"{self.session} | {self.id}"
 
-
 class WavePoint(models.Model):
     wave = models.ForeignKey(Wave, on_delete=models.CASCADE)
     latitude = models.DecimalField("Latitude", max_digits=22, decimal_places=16)
     longitude = models.DecimalField("Longitude", max_digits=22, decimal_places=16)
-    time = models.DateTimeField("Time")
+    time = models.DateTimeField("Time", null=True, blank=True)
 
     def __str__(self):
         return f"{self.wave.session} | {self.wave} | ({self.latitude}, {self.longitude})"
-
+    
 class WaveConfigs(models.Model):
     name = models.CharField("Name", max_length=90, default="")
     min_speed_to_start_wave = models.DecimalField("Speed To Trigger Wave Start", default=8, max_digits=4, decimal_places=1)

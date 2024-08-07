@@ -9,7 +9,7 @@ class SurferAdmin(admin.ModelAdmin):
 
 @admin.register(SurfSession)
 class SurfSessionAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'surfer', 'strava_activity_id', 'date')
+    list_display = ('id', 'name', 'surfer', 'strava_activity_id', 'date', 'location')
     list_filter = ('surfer', 'date')
 
 

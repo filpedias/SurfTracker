@@ -109,8 +109,13 @@ function fetch_sessions_gpx_data() {
              * @param {Object} response - The response from the sessions GPX data API.
              */
             if (response["status"] == "ok") {
-                process_sessions_data(response["data"]["gpxs_data"])
+                user_sessions_data = response["data"]["gpxs_data"]
+                process_sessions_data(user_sessions_data)
+                other_users_sessions_ids.forEach(
+
+                )
             }
         }
     });
 }
+

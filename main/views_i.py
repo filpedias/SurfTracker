@@ -124,8 +124,7 @@ class ProcessGPXData(APIView):
 
         response = copy.deepcopy(API_I_RESPONSE_TEMPLATE)
 
-        surfer_sessions = SurfSession.objects.filter(surfer=request.user) \
-                            .order_by('-date')
+        surfer_sessions = SurfSession.objects.all().order_by('-date')
         gpxs_data = []
         for s in surfer_sessions:
             gpx_session_waves = s.get_session_gpx()

@@ -62,12 +62,12 @@ def logout(request):
 @require_http_methods(["GET"])
 @login_required
 def home(request):
-
-    surfer_sessions = SurfSession.objects.all().order_by('-date')
+    from django.db.models import Q
 
     vc = {
         'surfer': request.user,
-        'sessions': surfer_sessions,
+        'sessions': SurfSession.objects.all().order_by('-date'),
+        'other_users_sessions': list(SurfSession.objects.filter(~Q(surfer=request.user)).order_by('-date').values_list('id', flat=True))
     }
 
     return render(request, 'home.html', {'vc': vc})

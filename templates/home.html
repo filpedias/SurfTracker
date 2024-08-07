@@ -70,4 +70,8 @@
 {% endspaceless %}
 {% endblock %}
 {% block javascripts_bottom %}
+<script>
+    var other_users_sessions = "{{vc.other_users_sessions|safe}}";
+    var other_users_sessions_ids = JSON.parse(other_users_sessions)
+</script>
 {% endblock javascripts_bottom %}
