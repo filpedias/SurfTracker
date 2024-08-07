@@ -1,0 +1,36 @@
+[
+    {
+        "model": "main.surfer",
+        "pk": 2,
+        "fields": {
+         "first_name": "Maria",   
+         "last_name": "Ribeiro",
+         "strava_user_id": "2",
+         "strava_code": "3",
+         "username": "maria_ribeiro420",
+         "email": "mariaribsampaio@gmail.com"
+        }
+    }, {
+        "model": "main.surfer",
+        "pk": 3,
+        "fields": {
+         "first_name": "Diogo",   
+         "last_name": "Dias",
+         "strava_user_id": "2",
+         "strava_code": "3",
+         "username": "diogo_dias92",
+         "email": "diogo_dias@gmail.com"
+        }
+    }, {
+        "model": "main.surfer",
+        "pk": 4,
+        "fields": {
+         "first_name": "André",   
+         "last_name": "Santos",
+         "strava_user_id": "2",
+         "strava_code": "3",
+         "username": "andre_santos92",
+         "email": "andre_jordan@gmail.com"
+        }
+    }
+]

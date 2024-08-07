@@ -1,3 +1,5 @@
+import random
+import pytz
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from datetime import time, datetime, timedelta
@@ -36,16 +38,16 @@ class SurfSession(models.Model):
     number_of_waves = models.IntegerField(default=0)
     duration = models.TimeField("Duration", default=time(0, 0))
     max_speed = models.DecimalField("Speed (km/h)", default=0, max_digits=4, decimal_places=1)
-    date = models.DateTimeField(null=True)
+    date = models.DateTimeField(null=True, default=datetime.now() - timedelta(days=random.randrange(1,20)))
     has_gpx_data = models.BooleanField(default=False)
 
     def display_date(self):
-        import pytz
+        if not self.date:
+            return "-"
         local_tz = pytz.timezone('Europe/Lisbon')
         dt_begin_today = datetime.now(local_tz).replace(hour=0, minute=0)
 
         dt_begin_yesterday = dt_begin_today - timedelta(days=1)
-
         
         if self.date > dt_begin_today:
             return f"Today at {self.date.strftime('%H:%M')}"

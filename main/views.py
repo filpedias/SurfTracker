@@ -62,8 +62,8 @@ def logout(request):
 @require_http_methods(["GET"])
 @login_required
 def home(request):
-    
-    surfer_sessions = SurfSession.objects.filter(surfer=request.user).order_by('-date')
+
+    surfer_sessions = SurfSession.objects.all().order_by('-date')
 
     vc = {
         'surfer': request.user,
@@ -87,7 +87,7 @@ def session(request, session_id):
     vc = {
         'surfer': session.surfer,
         'session': session,
-        'session_data': session_data     
+        'session_data': session_data
     }
 
     return render(request, 'session.html', {'vc': vc})
