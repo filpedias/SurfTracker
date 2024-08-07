@@ -82,7 +82,7 @@ def session(request, session_id):
         'name': session.name,
         'spot_lat': float(session.location.latitude),
         'spot_long': float(session.location.longitude),
-        'wave_points': get_session_gpx(session)
+        'wave_points': session.get_session_gpx()
     }
     vc = {
         'surfer': session.surfer,
