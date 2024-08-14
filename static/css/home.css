@@ -42,6 +42,7 @@
 .card-header {
   display: flex;
   background-color: white;
+  border: none;
 }
 
 .card-session {
@@ -66,7 +67,7 @@
 
 .avatar-athlete img, .avatar-surfer, .avatar-img {
   border-radius: 50%;
-  background-color: #f7f7fa;
+  
 }
 .avatar-lg, .avatar-lg .avatar-img {
   height: 90px;
@@ -76,8 +77,8 @@
 }
 
 .avatar-sm, .avatar-sm .avatar-img {
-  height: 32px;
-  width: 32px;
+  height: 55px;
+  width: 55px;
 }
 
 
@@ -87,8 +88,8 @@
 
 
 .session-surfer-name {
-  margin-left: 1rem;
-  padding-top: 0.2rem;
+  margin-left: 0.5rem;
+  margin-top: 0.8rem;
 }
 
 .session-date {
@@ -111,15 +112,15 @@
 
 .session-card-title {
   margin-bottom: 0.5rem;
-  margin-left: 3rem;
+  margin-left: 0.5rem;
   color:#474545;
   font-weight: 400;
 }
 .session-card-subtitle {
   margin-bottom: 1.8rem;
-  margin-left: 3rem;
-  color:gray;
+  color:#525252;
   font-weight: 100;
+  margin-left: 0.5rem;
   
 }
 .session-card-title a {
@@ -136,7 +137,7 @@
   float: right;
 }
 .table-session-stats{
-  margin-left: 3rem;
+  margin-left: 0.5rem;
   margin-bottom: 2rem;
   font-size: small;
 }

@@ -71,7 +71,9 @@
 {% endblock %}
 {% block javascripts_bottom %}
 <script>
-    var other_users_sessions = "{{vc.other_users_sessions|safe}}";
-    var other_users_sessions_ids = JSON.parse(other_users_sessions)
+
+    const sessions_data = {{ vc.sessions_data|safe }};
+    process_sessions_data(sessions_data)
+</script>
 </script>
 {% endblock javascripts_bottom %}

@@ -63,11 +63,11 @@ def logout(request):
 @login_required
 def home(request):
     from django.db.models import Q
-
+    feed_sessions = SurfSession.objects.all().order_by('-date')
     vc = {
         'surfer': request.user,
-        'sessions': SurfSession.objects.all().order_by('-date'),
-        'other_users_sessions': list(SurfSession.objects.filter(~Q(surfer=request.user)).order_by('-date').values_list('id', flat=True))
+        'sessions': feed_sessions,
+        'sessions_data': [s.get_json_data() for s in feed_sessions]
     }
 
     return render(request, 'home.html', {'vc': vc})

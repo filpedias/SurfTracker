@@ -111,9 +111,6 @@ function fetch_sessions_gpx_data() {
             if (response["status"] == "ok") {
                 user_sessions_data = response["data"]["gpxs_data"]
                 process_sessions_data(user_sessions_data)
-                other_users_sessions_ids.forEach(
-
-                )
             }
         }
     });

@@ -1,18 +1,33 @@
 {% load static %}
 <div class="card card-session">
-    <div class="card-header">
-        <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{session.surfer.id}}.png">
-        <div class="session-surfer-name">{{session.surfer.first_name}} {{session.surfer.last_name}}</div>
-        <div class="session-date">{{session.display_date}}</div>
+    <div class="card-header" style="display:block">
+        <div class="row">
+            <div class="col-sm-1 col-lg-1">
+                <img class="avatar-img avatar-sm"  src="{% static 'avatars/'%}{{session.surfer.id}}.png">
+            </div>
+            
+            <div class="col-lg-11 col-sm-11">
+                <div class="session-surfer-name">
+                    {{session.surfer.first_name}} {{session.surfer.last_name}}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-1 col-lg-1"></div>
+            <div class="col-sm-11 col-lg-11">
+                <span class="session-card-subtitle ">{{ session.display_date }} - {{ session.location }}</span>
+            </div>            
+        </div>
     </div>
     <div class="card-body session-card-body">
-        <div class="col-lg-12 col-sm-12 d-flex">
-            <div class="col-lg-5 col-sm-5">
-                <h5 class="session-card-title">
+        <div class="row">
+            <div class="col-lg-1 col-sm-1">
+            </div>
+            <div class="col-lg-11 col-sm-11">
+                <h5 class="session-card-title col-lg-12 col-sm-12">
                     <a href="/session/{{session.id}}">{{session.name}}</a>
                 </h5>
-                <span class="session-card-subtitle">{{session.location }}</span>
-                <table class="table-session-stats">
+                <table class="table-session-stats col-lg-12 col-sm-12">
                     <thead>
                         <th>Waves</th>
                         <th>Duration</th>
@@ -25,10 +40,12 @@
                     </tbody>
                 </table>
             </div>
-            <div class="col-lg-7 col-sm-7">
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-sm-12">
                 <div id="map_{{session.id}}" class="session-map" >
                 </div>
-            </div>
-        </div>                                         
+            </div>                                     
+        </div>
     </div>
 </div>

@@ -55,8 +55,7 @@ class SurfSession(models.Model):
             return f"Yesterday at {self.date.strftime('%H:%M')}"
         else:
             return f"{self.date.strftime('%A')} {self.date.strftime('%d %B')} at {self.date.strftime('%H:%M')}"
-            
-    
+
     def display_duration(self):
         return f"{self.duration.minute}min" if self.duration.hour == 0 else f"{self.duration.hour}h{self.duration.minute}min"
 
@@ -65,8 +64,7 @@ class SurfSession(models.Model):
 
     def __str__(self):
         return f"{self.display_date()} | {self.surfer.first_name} @ {self.location.name}"
-    
-    
+
     def get_session_gpx(self):
         gpx_session_waves = []
         session_waves = Wave.objects.filter(session=self)
@@ -82,6 +80,15 @@ class SurfSession(models.Model):
                 gpx_session_waves.append(session_wave_gpx)
         
         return gpx_session_waves
+
+    def get_json_data(self):
+        return {
+            "session_id": self.id,
+            "name": self.name,
+            "spot_lat": float(self.location.latitude),
+            "spot_long": float(self.location.longitude),
+            "wave_points": self.get_session_gpx()
+        }
 
 
 class Wave(models.Model):
