@@ -1,5 +1,5 @@
 from django.contrib import admin
-from main.models import Surfer, SurfSession, SurfSpot, Wave, WavePoint, WaveConfigs
+from main.models import Surfer, SurfSession, SurfSpot, Wave, WavePoint, WaveConfigs, SurfBoard
 
 
 @admin.register(Surfer)
@@ -33,3 +33,7 @@ class WavePointAdmin(admin.ModelAdmin):
 class WaveConfigsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'display_min_speed_to_start_wave', 'display_min_speed_to_stop_wave', 'minimum_time_of_event_to_consider_wave', 'display_min_max_speed_during_event_to_consider_wave')
     
+
+@admin.register(SurfBoard)
+class SurfBoardAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name', 'length', 'volume')

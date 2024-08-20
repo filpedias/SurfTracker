@@ -26,7 +26,7 @@
                 <main>
                     <div class="page-content">
                         <div class="row mt-5 ">
-                            <div class="col-xl-3 col-md-3">
+                            <div class="col-xl-4 col-md-4">
                                 <div class="card profile-card">
                                     <div class="card-body">
                                         <div class="avatar avatar-surfer avatar-lg">
@@ -50,10 +50,24 @@
                                         <a class="" >Your Sessions Log</a>
                                         <div class="small"><i class="fas fa-angle-right"></i></div>
                                     </div>
+                                    <div class="card-footer align-items-center justify-content-between">
+                                       <h5 class="text-center w-100 mt-3">Quiver</h2>
+                                        <div class="w-100 d-flex text-center justify-content-between">
+                                            {% for board in vc.surfer.boards.all %}
+                                                <div class="board-div d-grid">
+                                                    <img class="board-img" src="{% static 'boards/'%}{{board.image_name}}"></img>
+                                                    <span class="board-brand">{{board.brand}}</span>
+                                                    <span class="board-model">{{board.model}}</span>
+
+                                                </div>
+                                            {% endfor %}
+                                            
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="col-xl-9 col-md-6">
+                            <div class="col-xl-8 col-md-8">
                                 {% for session in vc.sessions %}
                                     {% include './feed_session_card.html' %}
                                 {% endfor %}

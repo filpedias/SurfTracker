@@ -13,6 +13,7 @@ class Surfer(AbstractUser):
     last_name = models.CharField(max_length=30)
     strava_user_id = models.CharField(max_length=90)
     strava_code = models.CharField(max_length=90)
+    boards = models.ManyToManyField("main.SurfBoard", verbose_name=("surfboards"))
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} | Strava ID: {self.strava_user_id}"
@@ -126,3 +127,15 @@ class WaveConfigs(models.Model):
 
     def __str__(self):
         return f"Speed to start/stop wave: {self.display_min_speed_to_start_wave()} | Seconds to consider wave: {self.minimum_time_of_event_to_consider_wave}s"
+
+
+class SurfBoard(models.Model):
+    name = models.CharField("Name", max_length=90, default="", null=True)
+    brand = models.CharField("Brand", max_length=90, default="", null=True)
+    model = models.CharField("Model", max_length=90, default="", null=True)
+    width = models.CharField("Width", blank=True, max_length=6)
+    length = models.CharField("Length", blank=True, max_length=6)
+    thickness = models.CharField("Thickness", blank=True, max_length=6)
+    volume = models.DecimalField("Volume", blank=True, max_digits=6, decimal_places=2)
+    image_name = models.CharField("Image Name", blank=True, max_length=36)
+    

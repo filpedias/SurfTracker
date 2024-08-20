@@ -125,6 +125,30 @@
             "short_name": "barra_aveiro",
             "is_saved": true
         }
+    }, {
+        "model": "main.surfboard",
+        "fields": {            
+            "name": "Sharpeye",
+            "brand": "Sharpeye",
+            "model": "Inferno",
+            "length": "5'5\"",
+            "width": "17.75",
+            "thickness": "2.45'",
+            "volume": 27.56,
+            "image_name": "sharpeye.png"
+        }
+    }, {
+        "model": "main.surfboard",
+        "fields": {            
+            "name": "Alka",
+            "brand": "Alka",
+            "model": "Trash Ripper",
+            "length": "5'8\"",
+            "width": "20\"",
+            "thickness": "2.5",
+            "volume": 31,
+            "image_name": "alka.png"
+        }
     }
 
     

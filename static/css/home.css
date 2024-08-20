@@ -199,3 +199,18 @@ body {
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu;
 }
 
+.board-img {
+  width: 3rem;
+  height: 8rem;
+  margin-inline: 3rem;
+}
+
+.board-brand {
+  color: #0f0e0e;
+  font-weight: 600;
+}
+
+.board-model {
+  color: #a7a7a7;
+  font-weight: 150;
+}
