@@ -15,6 +15,9 @@ class Surfer(AbstractUser):
     strava_code = models.CharField(max_length=90)
     boards = models.ManyToManyField("main.SurfBoard", verbose_name=("surfboards"))
     default_board = models.ForeignKey("main.SurfBoard", related_name="surfer_default_board", null=True, blank=True, on_delete=models.CASCADE)
+    last_updated_with_strava =  models.DateTimeField(
+        null=True, blank=True
+    )
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} | Strava ID: {self.strava_user_id}"
@@ -102,7 +105,7 @@ class SurfSession(models.Model):
         if not self.pk:
             if self.surfer and self.surfer.default_board:
                 self.board = self.surfer.default_board
-            super(SurfSession, self).save(**obj_data)
+        super(SurfSession, self).save(**obj_data)
 class Wave(models.Model):
     session = models.ForeignKey(SurfSession, on_delete=models.CASCADE)
     duration = models.TimeField("Duration", default=time(0, 0), null=True)

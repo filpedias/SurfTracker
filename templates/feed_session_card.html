@@ -13,34 +13,36 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-sm-1 col-lg-1"></div>
+            <div class="col-sm-1 col-lg-1">
+                {% if session.board != None %}
+                    <img class="board-img mt-4" src="{% static 'boards/'%}{{session.board.image_name}}"></img>
+                {% endif %}
+            </div>
             <div class="col-sm-11 col-lg-11">
-                <span class="session-card-subtitle ">{{ session.display_date }} - {{ session.location }}</span>
+                <div class="row">
+                    <span class="session-card-subtitle ">{{ session.display_date }} - {{ session.location }}</span>
+                </div>
+                <div class="row">
+                    <h5 class="session-card-title col-lg-12 col-sm-12">
+                        <a href="/session/{{session.id}}">{{session.name}}</a>
+                    </h5>
+                    <table class="table-session-stats col-lg-12 col-sm-12">
+                        <thead>
+                            <th>Waves</th>
+                            <th>Duration</th>
+                            <th>Max Speed</th>
+                        </thead>
+                        <tbody>
+                            <td>{{session.number_of_waves}}</td>
+                            <td>{{session.display_duration}}</td>
+                            <td>{{session.display_max_speed}}</td>
+                        </tbody>
+                    </table>                    
+                </div>
             </div>            
         </div>
     </div>
     <div class="card-body session-card-body">
-        <div class="row">
-            <div class="col-lg-1 col-sm-1">
-            </div>
-            <div class="col-lg-11 col-sm-11">
-                <h5 class="session-card-title col-lg-12 col-sm-12">
-                    <a href="/session/{{session.id}}">{{session.name}}</a>
-                </h5>
-                <table class="table-session-stats col-lg-12 col-sm-12">
-                    <thead>
-                        <th>Waves</th>
-                        <th>Duration</th>
-                        <th>Max Speed</th>
-                    </thead>
-                    <tbody>
-                        <td>{{session.number_of_waves}}</td>
-                        <td>{{session.display_duration}}</td>
-                        <td>{{session.display_max_speed}}</td>
-                    </tbody>
-                </table>
-            </div>
-        </div>
         <div class="row">
             <div class="col-lg-12 col-sm-12">
                 <div id="map_{{session.id}}" class="session-map" >

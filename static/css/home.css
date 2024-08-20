@@ -137,7 +137,7 @@
   float: right;
 }
 .table-session-stats{
-  margin-left: 0.5rem;
+  margin-left: 1.5rem;
   margin-bottom: 2rem;
   font-size: small;
 }
@@ -202,6 +202,8 @@ body {
 .board-img {
   width: 3rem;
   height: 8rem;
+}
+.board-on-quiver-img {
   margin-inline: 3rem;
 }
 

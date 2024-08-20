@@ -55,7 +55,7 @@
                                         <div class="w-100 d-flex text-center justify-content-between">
                                             {% for board in vc.surfer.boards.all %}
                                                 <div class="board-div d-grid">
-                                                    <img class="board-img" src="{% static 'boards/'%}{{board.image_name}}"></img>
+                                                    <img class="board-img board-on-quiver-img" src="{% static 'boards/'%}{{board.image_name}}"></img>
                                                     <span class="board-brand">{{board.brand}}</span>
                                                     <span class="board-model">{{board.model}}</span>
 
