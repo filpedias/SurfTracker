@@ -72,7 +72,7 @@ def update_strava():
     response = {'status': 'ok', "msg": []}
     surfer = Surfer.objects.get(strava_user_id=STRAVA_USER_ID)
 
-    if not os.path.exists('strava_tokens.json'):        
+    if not os.path.exists('strava_tokens.json'): 
         request_url = f'http://www.strava.com/oauth/authorize?client_id={CLIENT_ID}' \
                     f'&response_type=code&redirect_uri={REDIRECT_URI}' \
                     f'&scope=profile:read_all,activity:read_all'
@@ -106,37 +106,41 @@ def update_strava():
     data = get_token()
 
     access_token = data['access_token']
+    per_page = 200
+    empty_response = False
 
     athlete_url = f"https://www.strava.com/api/v3/athlete?access_token={access_token}"
+    print(athlete_url)
+    surfing_activities = []
     try:
         athlete_response = requests.get(athlete_url)
         if athlete_response.status_code == 200:
+            for page in range(0, 5):
+                activities_url = f"https://www.strava.com/api/v3/athlete/activities?page={page}&per_page={per_page}"
+                activities_response = requests.get(activities_url, headers={
+                    "accept": "application/json",
+                    "authorization": f"Bearer {access_token}"
+                })
+                if activities_response.status_code == 200:
+                    activities = activities_response.json()
+                    print(len(activities))
 
-            activities_url = f"https://www.strava.com/api/v3/athlete/activities"
-            activities_response = requests.get(activities_url, headers={
-                "accept": "application/json",
-                "authorization": f"Bearer {access_token}"
-            })
-            if activities_response.status_code == 200:
-                activities = activities_response.json()
-                surfing_activities = []
+                    for activity in activities:
+                        if 'type' in activity and activity['type'] == 'Surfing':
+                            surfing_activities.append(activity)
 
-                for activity in activities:
-                    if 'type' in activity and activity['type'] == 'Surfing':
-                        surfing_activities.append(activity)
-                
-                new_sessions_added = []
-                if surfer:
-                    new_sessions_added = load_surfing_activities_from_strava(
-                        surfing_activities, surfer, access_token
-                    )
-                    response["msg"].append(
-                        f"Added {len(new_sessions_added)} new surf sessions "
-                    )
-            else:
-                error_msg = f"{activities_url} returned {athlete_response.status_code}"
-                response["msg"].append(error_msg)
-                response["status"] = "error"
+                    new_sessions_added = []
+                    if surfer:
+                        new_sessions_added = load_surfing_activities_from_strava(
+                            surfing_activities, surfer, access_token
+                        )
+                        response["msg"].append(
+                            f"Added {len(new_sessions_added)} new surf sessions "
+                        )
+                else:
+                    error_msg = f"{activities_url} returned {athlete_response.status_code}"
+                    response["msg"].append(error_msg)
+                    response["status"] = "error"
         else:
             error_msg = f"Athlete activities request returned {athlete_response.status_code}"
             response["msg"].append(error_msg)
@@ -229,6 +233,7 @@ def create_gpx_activity_file(activity, access_token):
     latlong = requests.get(f"{url}&keys=latlng").json()
     time_list = requests.get(f"{url}&keys=time").json()
     altitude = requests.get(f"{url}&keys=altitude").json()
+    exceed_counter = 0
     for r in [latlong, time_list, altitude]:
         if isinstance(r, dict) and 'message' in r.keys():
             check = r['message']

@@ -1,4 +1,5 @@
-update_data_from_strava()
+
+//update_data_from_strava()
 
 /**
  * Updates data from Strava by making an AJAX request to the Strava sync API.
