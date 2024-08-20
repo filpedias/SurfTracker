@@ -14,6 +14,7 @@ class Surfer(AbstractUser):
     strava_user_id = models.CharField(max_length=90)
     strava_code = models.CharField(max_length=90)
     boards = models.ManyToManyField("main.SurfBoard", verbose_name=("surfboards"))
+    default_board = models.ForeignKey("main.SurfBoard", related_name="surfer_default_board", null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} | Strava ID: {self.strava_user_id}"
@@ -39,8 +40,13 @@ class SurfSession(models.Model):
     number_of_waves = models.IntegerField(default=0)
     duration = models.TimeField("Duration", default=time(0, 0))
     max_speed = models.DecimalField("Speed (km/h)", default=0, max_digits=4, decimal_places=1)
-    date = models.DateTimeField(null=True, default=datetime.now() - timedelta(days=random.randrange(1,20)))
+    date = models.DateTimeField(
+        null=True, default=datetime.now() - timedelta(days=random.randrange(1, 20))
+    )
     has_gpx_data = models.BooleanField(default=False)
+    board = models.ForeignKey(
+        "main.SurfBoard", related_name="sessison_board", null=True, blank=True, on_delete=models.CASCADE
+    )
 
     def display_date(self):
         if not self.date:
@@ -91,7 +97,12 @@ class SurfSession(models.Model):
             "wave_points": self.get_session_gpx()
         }
 
-
+    def save(self, **obj_data):
+        print("_________________", self.surfer, self.surfer.default_board)
+        if not self.pk:
+            if self.surfer and self.surfer.default_board:
+                self.board = self.surfer.default_board
+            super(SurfSession, self).save(**obj_data)
 class Wave(models.Model):
     session = models.ForeignKey(SurfSession, on_delete=models.CASCADE)
     duration = models.TimeField("Duration", default=time(0, 0), null=True)
@@ -138,4 +149,6 @@ class SurfBoard(models.Model):
     thickness = models.CharField("Thickness", blank=True, max_length=6)
     volume = models.DecimalField("Volume", blank=True, max_digits=6, decimal_places=2)
     image_name = models.CharField("Image Name", blank=True, max_length=36)
-    
+
+    def __str__(self):
+        return f"{self.name} | {self.volume} L"
