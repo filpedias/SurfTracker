@@ -92,7 +92,7 @@ def update_strava():
     data = get_token()
 
     if 'expires_at' in data and data['expires_at'] < time():
-        response["msg"].append(f"Token on strava_tokens expired, refreshing token for surfer {surfer.strava_code}")
+        response["msg"].append(f"Token on strava_tokens expired, refreshing token for surfer {surfer.first_name}")
         print(f"Token on strava_tokens expired, refreshing token for surfer {surfer.strava_code}")
         print(surfer)
         new_tokens = refresh_token(surfer.strava_code)

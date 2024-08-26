@@ -9,6 +9,7 @@
 {% block javascripts_top %}
 <script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin=""></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="{% static 'js/home.js' %}" crossorigin="" />
 
 {% endblock  %}
@@ -46,11 +47,10 @@
                                         <div class="text-center mt-3 mb-3">
                                         </div>
                                     </div>
-                                    <div class="card-footer d-flex align-items-center justify-content-between">
-                                        <a class="" >Your Sessions Log</a>
-                                        <div class="small"><i class="fas fa-angle-right"></i></div>
+                                    <div class="card-footer w-100 text-center">
+                                        <button class="button btn-outline-strava btn" onclick="update_data_from_strava()">Update With Strava <img class="strava-logo" src="{% static 'avatars/'%}strava_logo.png"/></button>
                                     </div>
-                                    <div class="card-footer align-items-center justify-content-between">
+                                    <!--div class="card-footer align-items-center justify-content-between">
                                        <h5 class="text-center w-100 mt-3">Quiver</h2>
                                         <div class="w-100 d-flex text-center justify-content-between">
                                             {% for board in vc.surfer.boards.all %}
@@ -62,6 +62,12 @@
                                                 </div>
                                             {% endfor %}
                                             
+                                        </div>
+                                    </div-->
+                                    <div class="card-footer align-items-center justify-content-between">
+                                        <h5 class="text-center w-100 mt-3">Last 7 Days</h2>
+                                        <div id="div_last_7_days" class="w-100 d-flex text-center justify-content-between loading-div">
+                                            <canvas id="last_days_chart"></canvas>
                                         </div>
                                     </div>
                                 </div>
@@ -88,6 +94,7 @@
 
     const sessions_data = {{ vc.sessions_data|safe }};
     process_sessions_data(sessions_data)
+    get_last_days_sessions()
 </script>
 </script>
 {% endblock javascripts_bottom %}

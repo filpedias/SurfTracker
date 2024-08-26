@@ -1,5 +1,4 @@
-
-//update_data_from_strava()
+const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 
 /**
  * Updates data from Strava by making an AJAX request to the Strava sync API.
@@ -96,10 +95,9 @@ function draw_session_map(session) {
  * Processes the response data and calls the process_sessions_data function.
  */
 function fetch_sessions_gpx_data() {
-    let url = "/api/i/sessions/gpx_data/";
 
     $.ajax({
-        url: url,
+        url: "/api/i/sessions/gpx_data/",
         type: "GET",
         async: true,
         contentType: 'application/json; charset=utf-8',
@@ -117,3 +115,90 @@ function fetch_sessions_gpx_data() {
     });
 }
 
+const last_sessions_chart_options = {
+    scales: {
+        y: {
+            grid: {
+                display: false
+            }
+        }, x: {
+            grid: {
+                display: false
+            }
+        }
+    },
+    plugins: {
+        scales: {
+            y: {
+                beginAtZero: true                
+            }
+        }, legend: {
+            display: false
+        }
+    }
+}
+
+function draw_chart(ctx_last_sessions, labels_days, data){
+    if (typeof last_sessions_chart !== 'undefined') {
+        last_sessions_chart.destroy()
+    }
+    
+    last_sessions_chart = new Chart(ctx_last_sessions, {
+        type: 'bar',
+        data: {
+          labels: labels_days,
+          datasets: [{            
+            data: data,
+            borderWidth: 1
+          }]
+        },
+        options: last_sessions_chart_options
+      });
+}
+
+
+function AddOrSubractDays(startingDate, number, add) {
+    if (add) {
+      return new Date(new Date().setDate(startingDate.getDate() + number));
+    } else {
+      return new Date(new Date().setDate(startingDate.getDate() - number));
+    }
+}
+
+function get_last_days_sessions() {
+
+    const ctx_last_sessions = document.getElementById('last_days_chart');
+    
+    labels_days = []
+    for (let i=6; i >= 0; i--){
+        day = AddOrSubractDays(new Date(), i, false)
+        //labels_days.push(w/eekday[day.getDay()])
+        labels_days.push(`${day.getDate()}/${day.getMonth() + 1}`);
+    }
+    
+    // fill div with default data
+    draw_chart(ctx_last_sessions, labels_days, [2, 0, 3, 1, 0, 1.5])
+
+
+    $.ajax({
+        url: `/api/i/sessions/last_days/${7}`,
+        type: "GET",
+        async: true,
+        contentType: 'application/json; charset=utf-8',
+        success: function(response) {
+            if (response["status"] == "ok") {
+                data = response["data"]["sessions"]
+            }
+        }, error: function(response){
+            alert("Error drawing last days sessions chart")
+            data = [0,0,0,0,0,0,0]
+        }, complete: function(response){
+            $("#div_last_7_days").removeClass("loading-div")
+            draw_chart(ctx_last_sessions, labels_days, data)
+        }
+        
+    });
+    
+
+    
+}

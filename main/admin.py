@@ -11,6 +11,7 @@ class SurferAdmin(admin.ModelAdmin):
 class SurfSessionAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'surfer', 'strava_activity_id', 'date', 'location', 'board')
     list_filter = ('surfer', 'date')
+    ordering = ('-date',)
 
 
 @admin.register(SurfSpot)

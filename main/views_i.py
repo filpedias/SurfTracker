@@ -1,17 +1,15 @@
 import copy
+import requests
+import json
+import os
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions
 from main.settings import API_I_RESPONSE_TEMPLATE
 from main.models import Surfer, SurfSession, SurfSpot, WaveConfigs, Wave, WavePoint
-import requests
-import json
-import os
-
-
 from datetime import datetime, timedelta, time as dt_time
-
 from main.configs import CLIENT_ID, CLIENT_SECRET
+from django.db.models import Sum
 # from gpxplotter import read_gpx_file, create_folium_map, add_segment_to_map
 
 
@@ -132,4 +130,29 @@ class ProcessGPXData(APIView):
         response["data"]["gpxs_data"] = gpxs_data
         response["status"] = "ok"
 
+        return Response(response)
+
+
+class LastDaysSessions(APIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, num_days_str, format=None):
+
+        response = copy.deepcopy(API_I_RESPONSE_TEMPLATE)
+        last_days_sessions = []
+        num_days = int(num_days_str)
+        dt_now = datetime.now()
+        sessions = SurfSession.objects.filter(
+            surfer=request.user,
+            date__gte=dt_now.replace(hour=0, minute=0) - timedelta(days=int(num_days))
+        )
+        for i in range(num_days):
+            day_sessions = sessions.filter(date__date=(dt_now - timedelta(days=i)).date())
+            day_sessions_times = map(lambda time: time.duration.hour + (time.duration.minute / 60.0), day_sessions)
+            last_days_sessions.append(sum(day_sessions_times))
+
+        response["data"]["sessions"] = list(reversed(last_days_sessions))
+        response["status"] = "ok"
+        response["msg"] = [f"Sessions from last {num_days} loaded"]
         return Response(response)

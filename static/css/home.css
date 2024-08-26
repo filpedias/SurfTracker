@@ -216,3 +216,11 @@ body {
   color: #a7a7a7;
   font-weight: 150;
 }
+
+#div_last_7_days {
+  min-height: 250px;
+}
+.loading-div {
+  opacity: 0.1;
+  cursor: wait;
+}
